@@ -5,7 +5,7 @@
 
 	    _OutlineColor("Outline Color", Color) = (1,1,1,1)
 	    _OutlineWidth("Outline Width", Range(1.0, 1.1)) = 1.05
-	    _OutlineNormalExtrusion("Outline Normal Extrusion", Range(0.001, 0.03)) = 0.03
+	    _OutlineNormalExtrusion("Outline Normal Extrusion", Range(0.001, 0.1)) = 0.03
 	}
 	SubShader {
 		Tags {
