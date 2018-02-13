@@ -9,7 +9,8 @@ public enum PlayerMoveSet {
 	MoveRight = 3,
 	JumpUp = 4,
 	JumpDown = 5,
-	Rest = 6
+	Rest = 6,
+	none = 7
 }
 
 public class GameManager : MonoBehaviour {
