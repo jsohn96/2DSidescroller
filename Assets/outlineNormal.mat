@@ -73,7 +73,7 @@ Material:
     - _Opacity: 1
     - _Outline: 0.02
     - _OutlineNormalExtrusion: 0.03
-    - _OutlineWidth: 1.05
+    - _OutlineWidth: 1.045
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

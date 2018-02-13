@@ -4,7 +4,7 @@
 	    _Color ("Color", Color) = (1,1,1,1)
 
 	    _OutlineColor("Outline Color", Color) = (1,1,1,1)
-	    _OutlineWidth("Outline Width", Range(1.0, 2.0)) = 1.08
+	    _OutlineWidth("Outline Width", Range(1.0, 1.1)) = 1.05
 	    _OutlineNormalExtrusion("Outline Normal Extrusion", Range(0.001, 0.03)) = 0.03
 	}
 	SubShader {
