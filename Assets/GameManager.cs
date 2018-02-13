@@ -5,11 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	enum PlayState {
-		Strategize = 0,
-		PlayerTurn = 1,
-		EnemyTurn = 2
+		Init = 0,
+		Strategize = 1,
+		PlayerTurn = 2,
+		EnemyTurn = 3
 
 	}
+
+	PlayState _currentPlayState = PlayState.Init;
 			
 	public static GameManager _gameManagerInstance = null;
 
@@ -25,5 +28,24 @@ public class GameManager : MonoBehaviour {
 			Destroy (gameObject);
 		}
 		DontDestroyOnLoad (this);
+	}
+
+	public void MoveToNextState(){
+		switch (_currentPlayState) {
+		case PlayState.Strategize:
+			_currentPlayState = PlayState.PlayerTurn;
+			break;
+		case PlayState.PlayerTurn:
+			//TODO: Check if this ends the game
+			_currentPlayState = PlayState.EnemyTurn;
+			break;
+		case PlayState.EnemyTurn:
+			//TODO: Check if this ends the game
+			_currentPlayState = PlayState.Strategize;
+			break;
+		default:
+			break;
+		}
+
 	}
 }
