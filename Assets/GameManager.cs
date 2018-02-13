@@ -49,14 +49,17 @@ public class GameManager : MonoBehaviour {
 		switch (_currentPlayState) {
 		case PlayState.Strategize:
 			_currentPlayState = PlayState.PlayerTurn;
+			_playerCommandManager.BeginPlayerCommand ();
 			break;
 		case PlayState.PlayerTurn:
 			//TODO: Check if this ends the game
 			_currentPlayState = PlayState.EnemyTurn;
+			_enemyTurnManager.BeginEnemyTurn ();
 			break;
 		case PlayState.EnemyTurn:
 			//TODO: Check if this ends the game
 			_currentPlayState = PlayState.Strategize;
+			_playerStrategyManager.BeginPlayerStrategy ();
 			break;
 		default:
 			break;

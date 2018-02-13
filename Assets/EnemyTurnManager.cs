@@ -47,4 +47,6 @@ public class EnemyTurnManager : MonoBehaviour {
 		_currentMoveCnt = 0;
 		GameManager._gameManagerInstance.MoveToNextState ();
 	}
+
+	}
 }

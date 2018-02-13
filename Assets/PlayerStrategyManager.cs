@@ -25,4 +25,7 @@ public class PlayerStrategyManager : MonoBehaviour {
 		_playerCommandManager.FeedInCommands (_tentativePlayerMoveSet);
 		GameManager._gameManagerInstance.MoveToNextState ();
 	}
+
+	public void BeginPlayerStrategy(){
+	}
 }

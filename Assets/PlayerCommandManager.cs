@@ -48,6 +48,10 @@ public class PlayerCommandManager : MonoBehaviour {
 		}
 	}
 
+	public void BeginPlayerCommand() {
+		RelayCommand ();
+	}
+
 	void EndPlayerTurn(){
 		_currentMoveCnt = 0;
 		GameManager._gameManagerInstance.MoveToNextState ();
