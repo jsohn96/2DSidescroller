@@ -43,6 +43,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		_thisRectTransform = GetComponent<RectTransform> ();
 		_screenWidth = Screen.width;
 		_screenHeight = Screen.height;
+		_image = GetComponent<Image> ();
 	}
 
 	public void OnBeginDrag(PointerEventData data){
@@ -80,6 +81,18 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		_removedFromPlay = true;
 	}
 
+	public void Activate(Sprite sprite, PlayerMoveSet playerMoveSet, Transform handArea){
+		_image.sprite = sprite;
+		_whichMoveSet = playerMoveSet;
+		_commandHover.enabled = true;
+		if (_thisCanvasGroup == null) {
+			_thisCanvasGroup = GetComponent<CanvasGroup> ();
+		}
+		_thisCanvasGroup.interactable = true;
+		transform.SetParent (handArea);
+		_image.enabled = true;
+		_removedFromPlay = false;
+	}
 }
 
 
