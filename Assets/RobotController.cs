@@ -7,6 +7,10 @@ public class RobotController : MonoBehaviour {
 	protected float _movementDistance = 3f; //per turn
 	protected bool _isMoving = false;
 
+	protected int _walkAnimHash = Animator.StringToHash("Walk");
+	protected int _jumpAnimHash = Animator.StringToHash("Jump");
+	protected int _attackAnimHash = Animator.StringToHash("Punch");
+
 	[SerializeField] protected Animator _robotAnim;
 
 	[SerializeField] protected float _attackDuration, _jumpDuration, _moveDuration, _restDuration;

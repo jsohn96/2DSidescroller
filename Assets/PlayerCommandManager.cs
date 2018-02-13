@@ -2,16 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerMoveSet {
-	AttackLeft = 0,
-	AttackRight = 1,
-	MoveLeft = 2,
-	MoveRight = 3,
-	JumpUp = 4,
-	JumpDown = 5,
-	Rest = 6
-}
-
 public class PlayerCommandManager : MonoBehaviour {
 	
 	[SerializeField] PlayerRobotController _playerRobotController;
@@ -20,11 +10,10 @@ public class PlayerCommandManager : MonoBehaviour {
 
 	int _totalMoveCnt;
 
-	int _currentTurnCnt = 0;
+	int _currentMoveCnt = 0;
 
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;
-		_playerMoveSetArray = new PlayerMoveSet[_totalMoveCnt];
 	}
 
 	void Update(){
@@ -32,15 +21,19 @@ public class PlayerCommandManager : MonoBehaviour {
 			RelayCommand ();
 		}
 	}
+
+	public void FeedInCommands(PlayerMoveSet[] playerMoves){
+		_playerMoveSetArray = playerMoves;
+	}
 		
 
 	//Iterate Over the player commands during the players turn
 	void RelayCommand(){
 		float waitForNextCommandDuration;
 
-		PlayerMoveSet tempPlayerMoveSet = _playerMoveSetArray [_currentTurnCnt];
+		PlayerMoveSet tempPlayerMoveSet = _playerMoveSetArray [_currentMoveCnt];
 		waitForNextCommandDuration = _playerRobotController.HandlePlayerCommand (tempPlayerMoveSet);
-		_currentTurnCnt++;
+		_currentMoveCnt++;
 
 		StartCoroutine (WaitForNextCommand (waitForNextCommandDuration));
 	}
@@ -48,7 +41,7 @@ public class PlayerCommandManager : MonoBehaviour {
 	//Wait for current command to finish before calling next command
 	IEnumerator WaitForNextCommand(float waitDuration){
 		yield return new WaitForSeconds (waitDuration);
-		if (_currentTurnCnt < _totalMoveCnt) {
+		if (_currentMoveCnt < _totalMoveCnt) {
 			RelayCommand ();
 		} else {
 			EndPlayerTurn ();
@@ -56,7 +49,7 @@ public class PlayerCommandManager : MonoBehaviour {
 	}
 
 	void EndPlayerTurn(){
-		_currentTurnCnt = 0;
+		_currentMoveCnt = 0;
 		GameManager._gameManagerInstance.MoveToNextState ();
 	}
 }

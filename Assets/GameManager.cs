@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerMoveSet {
+	AttackLeft = 0,
+	AttackRight = 1,
+	MoveLeft = 2,
+	MoveRight = 3,
+	JumpUp = 4,
+	JumpDown = 5,
+	Rest = 6
+}
+
 public class GameManager : MonoBehaviour {
 
 	enum PlayState {
@@ -20,6 +30,11 @@ public class GameManager : MonoBehaviour {
 		get {return _howManyMovesPerTurn; }
 	}
 	[SerializeField] int _howManyMovesPerTurn = 3;
+
+	[Header("Manager References")]
+	[SerializeField] PlayerStrategyManager _playerStrategyManager;
+	[SerializeField] PlayerCommandManager _playerCommandManager;
+	[SerializeField] EnemyTurnManager _enemyTurnManager;
 
 	void Awake(){
 		if (_gameManagerInstance == null) {

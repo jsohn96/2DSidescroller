@@ -2,7 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRobotController : RobotController {
+public class EnemyRobotController : RobotController {
+
+	//preassigned Enemy Behavior
+	[SerializeField] PlayerMoveSet[] _enemyMoveSetArray;
+	int _thisEnemyMovesetLength = 0;
+	int _currentMoveIndex = 0;
+
+	void Start(){
+		_thisEnemyMovesetLength = _enemyMoveSetArray.Length;
+	}
 
 	public override float Attack (bool isLeft) {
 		//TODO: Process the bool value for Left Right
@@ -27,50 +36,46 @@ public class PlayerRobotController : RobotController {
 		return _restDuration;
 	}
 
-	public float HandlePlayerCommand(PlayerMoveSet playerMoveSet){
-		float waitDuration = 0f;
+	void HandleEnemyMove(){
+		PlayerMoveSet tempMoveSet = _enemyMoveSetArray [_currentMoveIndex];
 
-		switch (playerMoveSet) {
+		switch (tempMoveSet) {
 		case PlayerMoveSet.AttackLeft:
-			waitDuration = Attack (true);
+			Attack (true);
 			break;
 		case PlayerMoveSet.AttackRight:
-			waitDuration = Attack (false);
+			Attack (false);
 			break;
 		case PlayerMoveSet.MoveLeft:
-			waitDuration = Move (true);
+			Move (true);
 			break;
 		case PlayerMoveSet.MoveRight:
-			waitDuration = Move (false);
+			Move (false);
 			break;
 		case PlayerMoveSet.JumpUp:
-			waitDuration = Jump (true);
+			Jump (true);
 			break;
 		case PlayerMoveSet.JumpDown:
-			waitDuration = Jump (false);
+			Jump (false);
 			break;
 		case PlayerMoveSet.Rest:
-			waitDuration = Rest ();
+			Rest ();
 			break;
 		default:
 			break;
 		}
-		return waitDuration;
+
+		_currentMoveIndex++;
+		if (_currentMoveIndex >= _thisEnemyMovesetLength) {
+			_currentMoveIndex = 0;
+		}
 	}
 
+	void OnEnable(){
+		EnemyTurnManager.OnEnemyMove += HandleEnemyMove;
+	}
 
-
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.A)) {
-			Move (true);
-		} else if (Input.GetKeyUp(KeyCode.A)) {
-			Move (false);
-		}
-		if(Input.GetKeyDown(KeyCode.Space)){
-			Jump (true);
-		}
-		if(Input.GetKeyDown(KeyCode.LeftShift)){
-			Attack (true);
-		}
+	void OnDisable(){
+		EnemyTurnManager.OnEnemyMove -= HandleEnemyMove;
 	}
 }
