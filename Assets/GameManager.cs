@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	PlayState _currentPlayState = PlayState.Init;
+	PlayState _currentPlayState = PlayState.Strategize;
 			
 	public static GameManager _gameManagerInstance = null;
 

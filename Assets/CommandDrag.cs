@@ -28,22 +28,29 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		get { return _originParent;}
 		set { if(value is Transform) _originParent = value; }
 	}
-	Transform _goalParent = null;
-	public Transform GoalParent {
-		get { return _goalParent;}
-		set { if(value is Transform) _goalParent = value; }
-	}
+
+	[SerializeField] Transform _handArea;
 		
 	GameObject _placeholder = null;
 
 	float _screenWidth, _screenHeight;
 	float _canvasScalarWidth = 1920f, _canvasScalarHeight = 1080f;
 
+	//Variables for Possible Unity 2017, non adjusting
+	HorizontalLayoutGroup _horizontalLayoutGroup;
+
+	Color _fullColor;
+	Color _emptyColor;
+
 	void Start(){
 		_thisRectTransform = GetComponent<RectTransform> ();
 		_screenWidth = Screen.width;
 		_screenHeight = Screen.height;
 		_image = GetComponent<Image> ();
+
+		_fullColor = Color.white;
+		_emptyColor = _fullColor;
+		_emptyColor.a = 0.0f;
 	}
 
 	public void OnBeginDrag(PointerEventData data){
@@ -72,16 +79,17 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	public void RemoveFromPlay(){
-		_image.enabled = false;
+		_image.raycastTarget = false;
 		_commandHover.enabled = false;
 		if (_thisCanvasGroup == null) {
 			_thisCanvasGroup = GetComponent<CanvasGroup> ();
 		}
 		_thisCanvasGroup.interactable = false;
 		_removedFromPlay = true;
+		StartCoroutine (FadeCommandAway ());
 	}
 
-	public void Activate(Sprite sprite, PlayerMoveSet playerMoveSet, Transform handArea){
+	public void Activate(Sprite sprite, PlayerMoveSet playerMoveSet){
 		_image.sprite = sprite;
 		_whichMoveSet = playerMoveSet;
 		_commandHover.enabled = true;
@@ -89,9 +97,37 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 			_thisCanvasGroup = GetComponent<CanvasGroup> ();
 		}
 		_thisCanvasGroup.interactable = true;
-		transform.SetParent (handArea);
-		_image.enabled = true;
+		_image.raycastTarget = true;
+		_image.color = _fullColor;
+		transform.SetParent (_handArea);
 		_removedFromPlay = false;
+	}
+
+	public void ReturnToHand(){
+		transform.SetParent (_handArea);
+		StartCoroutine (UnityBugWorkAround ());
+	}
+
+	IEnumerator UnityBugWorkAround(){
+		yield return null;
+		//TODO: Temporaray solution to Unity 2017 dynamic Layout Adjustment Bug
+		_horizontalLayoutGroup = _handArea.GetComponent<HorizontalLayoutGroup> ();
+		_horizontalLayoutGroup.enabled = false;
+		_horizontalLayoutGroup.enabled = true;
+		// End of Temporary solution
+	}
+
+
+	IEnumerator FadeCommandAway(){
+		float timer = 0f;
+		float duration = 1f;
+		while (timer < duration) {
+			timer += Time.deltaTime;
+			_image.color = Color.Lerp (_fullColor, _emptyColor, timer / duration);
+			yield return null;
+		}
+		_image.color = _emptyColor;
+		yield return null;
 	}
 }
 

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CommandDeck : MonoBehaviour {
-	[SerializeField] Transform _handArea;
+	[SerializeField] GameObject _handArea;
 
 	int _commandCardsInPlay = 0;
+	public int CommandCardsInPlay {
+		get{ return _commandCardsInPlay; }
+		set { _commandCardsInPlay = value; }
+	}
 	int _totalCardCnt;
 
 	[SerializeField] CommandDrag[] _commandCardPool;
@@ -32,8 +36,7 @@ public class CommandDeck : MonoBehaviour {
 		if (_commandCardPool [_commandCardPoolIterator].RemovedFromPlay) {
 			_commandCardPool [_commandCardPoolIterator].Activate (
 				_commandSprites [_prevDrawnMove], 
-				(PlayerMoveSet)_prevDrawnMove, 
-				_handArea);
+				(PlayerMoveSet)_prevDrawnMove);
 			_commandCardsInPlay++;
 		} else {
 			if (_commandCardPoolIterator >= 4) {
@@ -55,7 +58,6 @@ public class CommandDeck : MonoBehaviour {
 			return SelectRandomMoveset ();
 		} else {
 			return drawnMove;
-	
 		}
 	}
 }

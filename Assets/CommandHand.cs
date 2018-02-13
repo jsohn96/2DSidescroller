@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CommandHand : MonoBehaviour, IDropHandler {
 	public enum Slot {
@@ -17,12 +18,39 @@ public class CommandHand : MonoBehaviour, IDropHandler {
 		get { return _moveSetInSlot; }
 	}
 
-	public void OnDrop(PointerEventData eventData) {
-		CommandDrag commandDrag = eventData.pointerDrag.GetComponent<CommandDrag>();
-		if(commandDrag != null) {
-			commandDrag.OriginParent = this.transform;
-			_moveSetInSlot = commandDrag.WhichMoveSet;
-		}
+	CommandDrag _occupantCommand = null;
 
+	public void OnDrop(PointerEventData eventData) {
+		
+		CommandDrag commandDrag = eventData.pointerDrag.GetComponent<CommandDrag> ();
+		if (commandDrag != null) {
+			if (_whichSlot != Slot.Hand) {
+				if (transform.childCount > 0) {
+					_occupantCommand.ReturnToHand ();
+				}
+				_moveSetInSlot = commandDrag.WhichMoveSet;
+				_occupantCommand = commandDrag;
+			}
+			commandDrag.OriginParent = this.transform;
+		}	
+	}
+
+	public PlayerMoveSet CheckOccupancy(){
+		if (transform.childCount <= 0) {
+			_moveSetInSlot = PlayerMoveSet.none;
+		}
+		return _moveSetInSlot;
+	}
+
+	public void ReturnOccupant(){
+		if (_occupantCommand != null) {
+			_occupantCommand.ReturnToHand ();
+		}
+	}
+
+	public void RemoveOccupant(){
+		if (_occupantCommand != null) {
+			_occupantCommand.RemoveFromPlay ();
+		}
 	}
 }
