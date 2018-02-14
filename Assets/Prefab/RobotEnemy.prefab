@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 4221273070176548}
   - component: {fileID: 95693134959062430}
   - component: {fileID: 114798001931836676}
+  - component: {fileID: 65775857309227266}
   m_Layer: 0
   m_Name: RobotEnemy
   m_TagString: Untagged
@@ -494,16 +495,16 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1370071610932064}
-  m_LocalRotation: {x: -0, y: 0.99973387, z: -0, w: 0.023070075}
-  m_LocalPosition: {x: -0.05, y: -2.52, z: -0.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -4.58, y: -1.15, z: -0.87}
+  m_LocalScale: {x: 0.40000024, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 4060561044617120}
   - {fileID: 4647367285020274}
   - {fileID: 4703611175131660}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 177.356, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!4 &4241811364704264
 Transform:
   m_ObjectHideFlags: 1
@@ -740,6 +741,18 @@ Transform:
   m_Father: {fileID: 4936621277460386}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65775857309227266
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1370071610932064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9999998, y: 2.0103953, z: 1.4831908}
+  m_Center: {x: 1.8435516e-16, y: 0.972795, z: -0.014211534}
 --- !u!95 &95693134959062430
 Animator:
   serializedVersion: 3
@@ -773,7 +786,8 @@ MonoBehaviour:
   _jumpDuration: 0
   _moveDuration: 0
   _restDuration: 0
-  _enemyMoveSetArray: 0400000004000000000000000500000000000000
+  _enemyMoveSetArray: 
+  _material: {fileID: 2100000, guid: 0f937b5fa49b0da4ab54129f0df6528b, type: 2}
 --- !u!137 &137459038490971586
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
