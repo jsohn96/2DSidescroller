@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 95693134959062430}
   - component: {fileID: 114798001931836676}
   - component: {fileID: 65775857309227266}
+  - component: {fileID: 114836742791992230}
   m_Layer: 0
   m_Name: RobotEnemy
   m_TagString: Untagged
@@ -787,7 +788,21 @@ MonoBehaviour:
   _moveDuration: 0
   _restDuration: 0
   _enemyMoveSetArray: 
+--- !u!114 &114836742791992230
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1370071610932064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae85fc28f294d604b9cb17864324a29c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 0f937b5fa49b0da4ab54129f0df6528b, type: 2}
+  _robotSkinnedMeshRenderers:
+  - {fileID: 137459038490971586}
+  - {fileID: 137614408348309362}
 --- !u!137 &137459038490971586
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

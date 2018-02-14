@@ -20,6 +20,11 @@ public struct Tile {
 }
 
 public class LevelGenerator : MonoBehaviour {
+	/* Level Generator Process Summary
+	 * Initialize Level --> Read randomly selected text file 
+	 * --> Progressively Store level data --> Instantiate enemies 
+	 * --> Instantiate Level 
+	 */
 
 	[SerializeField] int _verticalTileCnt = 5;
 	[SerializeField] int _horizontalTileCnt = 9;
@@ -39,9 +44,11 @@ public class LevelGenerator : MonoBehaviour {
 	[SerializeField] GameObject _enemyRobotPrefab;
 	EnemyRobotController _tempEnemyRobotController;
 
+	//Nested Array of Tiles to store level data
 	Tile[,] _tiles;
 
 	Quaternion _identityQuaternion = new Quaternion(0f, 0f, 0f, 1f);
+	Quaternion _enemyRobotFacingLeftRotation = new Quaternion (0f, -0.707f, 0f, 0.707f);
 
 	[SerializeField] string[] _paths;
 	char[] _delimiter = new char[1]{'|'};
@@ -67,14 +74,12 @@ public class LevelGenerator : MonoBehaviour {
 				float xAxis = (j) * _tileHeight + _initialPos.x;
 				float yAxis = (i) * _tileWidth + _initialPos.y;
 				_tiles [j, i] = new Tile (xAxis, yAxis, false, false, false);
-//				Vector3 tempPos = _initialPos;
-//				tempPos.x = xAxis;
-//				tempPos.y = yAxis;
-//				Instantiate (_tileFloorPrefab, tempPos, _identityQuaternion, this.transform);
 			}
 		}
 	}
 
+
+	//Traverse the nested array of tiles to instantiate the level tiles
 	void GenerateLevel(){
 		for (int i = 0; i < _verticalTileCnt; i++) {
 			for (int j = 0; j < _horizontalTileCnt; j++) {
@@ -100,10 +105,14 @@ public class LevelGenerator : MonoBehaviour {
 
 	//Instantiate Enemy Prefabs while parsing occurs
 	void GenerateEnemy(int horizontal, int vertical, PlayerMoveSet[] enemyMoveSet){
-		Vector3 tempPos = _initialPos;
+		//Occupy the spot
+		_tiles[horizontal, vertical].isOccupied = true;
+		//get position data for enemy
+		Vector3 tempPos;
 		tempPos.x = _tiles [horizontal, vertical].x;
 		tempPos.y = _tiles [horizontal, vertical].y + _robotFootingOffset;
-		GameObject tempEnemyObject = Instantiate (_enemyRobotPrefab, tempPos, _identityQuaternion, this.transform);
+		tempPos.z = -1f;
+		GameObject tempEnemyObject = Instantiate (_enemyRobotPrefab, tempPos, _enemyRobotFacingLeftRotation, this.transform);
 		_tempEnemyRobotController = tempEnemyObject.GetComponent<EnemyRobotController>();
 		_tempEnemyRobotController.InitializeEnemy (enemyMoveSet);
 	}
@@ -161,11 +170,14 @@ public class LevelGenerator : MonoBehaviour {
 				_tiles [i, y] = tempTile;
 			}
 		} else {
+			// Split string by delimiter
 			string[] tempString = line.Split (_delimiter);
-			Debug.Log (tempString [0]);
+			// 0 - horizontal index
 			int enemyH = int.Parse (tempString [0]);
+			// 1 - vertical index
 			int enemyV = int.Parse (tempString [1]);
 
+			// 2 - enemy moveset
 			int length = tempString [2].Length;
 			PlayerMoveSet[] tempEnemyMoveset = new PlayerMoveSet[length];
 
@@ -190,6 +202,7 @@ public class LevelGenerator : MonoBehaviour {
 					break;
 				}
 			}
+			//Call to instantiate enemy
 			GenerateEnemy (enemyH, enemyV, tempEnemyMoveset);
 		}
 	}
