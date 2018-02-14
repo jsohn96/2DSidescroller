@@ -41,12 +41,13 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] TogglePlayerStrategyUI _togglePlayerStrategyUI;
 
 	void Awake(){
-		if (_gameManagerInstance == null) {
+//		if (_gameManagerInstance == null) {
 			_gameManagerInstance = this;
-		} else if (_gameManagerInstance != this) {
-			Destroy (gameObject);
-		}
-		DontDestroyOnLoad (this);
+//		}
+//		else if (_gameManagerInstance != this) {
+//			Destroy (gameObject);
+//		}
+//		DontDestroyOnLoad (this);
 	}
 
 	void Start(){
