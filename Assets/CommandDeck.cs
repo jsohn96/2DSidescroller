@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CommandDeck : MonoBehaviour {
-	[SerializeField] GameObject _handArea;
-
 	int _commandCardsInPlay = 0;
 	public int CommandCardsInPlay {
 		get{ return _commandCardsInPlay; }
-		set { _commandCardsInPlay = value; }
+		set { _commandCardsInPlay = value; 
+			_numberText.text = _leftOverCardString [5 - _commandCardsInPlay];}
 	}
 	int _totalCardCnt;
 
@@ -18,6 +18,10 @@ public class CommandDeck : MonoBehaviour {
 	[SerializeField] Sprite[] _commandSprites = new Sprite[7];
 
 	int _prevDrawnMove = (int)PlayerMoveSet.none;
+
+
+	[SerializeField] Text _numberText;
+	string[] _leftOverCardString = new string[6]{"0", "1","2","3","4","5"};
 
 	void Start(){
 		_totalCardCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn + 2;
@@ -38,6 +42,7 @@ public class CommandDeck : MonoBehaviour {
 				_commandSprites [_prevDrawnMove], 
 				(PlayerMoveSet)_prevDrawnMove);
 			_commandCardsInPlay++;
+			_numberText.text = _leftOverCardString [5 - _commandCardsInPlay];
 		} else {
 			if (_commandCardPoolIterator >= 4) {
 				_commandCardPoolIterator = 0;
