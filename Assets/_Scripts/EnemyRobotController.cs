@@ -6,10 +6,13 @@ public class EnemyRobotController : RobotController {
 
 	//preassigned Enemy Behavior
 	[SerializeField] PlayerMoveSet[] _enemyMoveSetArray;
+
 	int _thisEnemyMovesetLength = 0;
 	int _currentMoveIndex = 0;
 
-	void Start(){
+
+	public void InitializeEnemy(PlayerMoveSet[] parsedCommands){
+		_enemyMoveSetArray = parsedCommands;
 		_thisEnemyMovesetLength = _enemyMoveSetArray.Length;
 	}
 
@@ -78,4 +81,7 @@ public class EnemyRobotController : RobotController {
 	void OnDisable(){
 		EnemyTurnManager.OnEnemyMove -= HandleEnemyMove;
 	}
+
+
+
 }
