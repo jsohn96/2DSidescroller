@@ -1,10 +1,14 @@
 ﻿Shader "Custom/DiffuseOutlineNormal" {
 	Properties {
+		[Toggle] _UseMainTexture("Use Main Texture", Int) = 0
 	    _MainTex ("Main Texture (RGB)", 2D) = "white" {}
+	    [Toggle] _UseColor("Use Color", Int) = 0
 	    _Color ("Color", Color) = (1,1,1,1)
-
+	    [Toggle] _UseOutlineColor("Use Outline Color", Int) = 0
 	    _OutlineColor("Outline Color", Color) = (1,1,1,1)
+	    [Toggle] _UseOutlineWidth("Use Outline Width", Int) = 0
 	    _OutlineWidth("Outline Width", Range(0.0, 1.1)) = 1.05
+	    [Toggle] _UseNormalExtrusion("Use Normal Extrusion", Int) = 0
 	    _OutlineNormalExtrusion("Outline Normal Extrusion", Range(0, 1)) = 0.03
 	}
 	SubShader {
@@ -76,4 +80,5 @@
 	}
 
 	Fallback "Diffuse"
+	CustomEditor "CustomShaderGUI"
 }
