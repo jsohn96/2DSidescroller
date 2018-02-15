@@ -62,6 +62,7 @@ public class LevelGenerator : MonoBehaviour {
 	//Nested Array of Tiles to store level data
 	Tile[,] _tiles;
 	GameObject[,] _tileGameObject;
+	List<EnemyRobotController> _enemyRobotControllers = new List<EnemyRobotController>();
 
 	Quaternion _identityQuaternion = new Quaternion(0f, 0f, 0f, 1f);
 	Quaternion _enemyRobotFacingLeftRotation = new Quaternion (0f, -0.707f, 0f, 0.707f);
@@ -140,6 +141,7 @@ public class LevelGenerator : MonoBehaviour {
 		tempPos.z = -1f;
 		GameObject tempEnemyObject = Instantiate (_enemyRobotPrefab, tempPos, _enemyRobotFacingLeftRotation, this.transform);
 		_tempEnemyRobotController = tempEnemyObject.GetComponent<EnemyRobotController>();
+		_enemyRobotControllers.Add (_tempEnemyRobotController);
 		_tempEnemyRobotController.InitializeEnemy (horizontal, vertical, enemyMoveSet);
 	}
 
@@ -155,6 +157,21 @@ public class LevelGenerator : MonoBehaviour {
 
 	public TileGridData GetTileGridData(){
 		return _tileGridData;
+	}
+
+	public void DestroyEnemy(int hCnt, int vCnt){
+		bool enemyToDestroyFound = false;
+		IEnumerator<EnemyRobotController> iEnum = _enemyRobotControllers.GetEnumerator ();
+		iEnum.Reset ();
+		while (iEnum.MoveNext() && !enemyToDestroyFound) {
+			EnemyRobotController tempEnemyController = iEnum.Current;
+			if (tempEnemyController.CurrentHorizontalIndex == hCnt) {
+				if (tempEnemyController.CurrentVerticalIndex == vCnt) {
+					tempEnemyController.DestroyEnemyRobot ();
+					enemyToDestroyFound = true;
+				}
+			}
+		}
 	}
 
 	//Swap the sprites of broken wall to sprite without wall

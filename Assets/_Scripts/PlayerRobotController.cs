@@ -28,9 +28,22 @@ public class PlayerRobotController : RobotController {
 		if (_currentHorizontalIndex < _tileGridData.horizontalTileCnt) {
 			Tile tile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex, _currentVerticalIndex);
 			if (tile.isWall) {
-				StartCoroutine(LevelGenerator._levelGeneratorInstance.BreakWall (punchTargetIndex, _currentVerticalIndex));
+				StartCoroutine (LevelGenerator._levelGeneratorInstance.BreakWall (punchTargetIndex, _currentVerticalIndex));
 				tile.isWall = false;
 				LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex, _currentVerticalIndex, tile);
+			} else if (isLeft) {
+				if (tile.isOccupied) {
+					LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex, _currentVerticalIndex);
+					tile.isOccupied = false;
+					LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex, _currentVerticalIndex, tile);
+				}
+			} else {
+				Tile rightTile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex +1, _currentVerticalIndex);
+				if (rightTile.isOccupied) {
+					LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex + 1, _currentVerticalIndex);
+					rightTile.isOccupied = false;
+					LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex + 1, _currentVerticalIndex, rightTile);
+				}
 			}
 		}
 	}

@@ -10,6 +10,7 @@ public class EnemyRobotController : RobotController {
 
 	int _thisEnemyMovesetLength = 0;
 	int _currentMoveIndex = 0;
+	RobotEnemyMaterialHandler _robotEnemyMaterialHandler;
 
 	void Start(){
 		// keep a reference to level spacing data
@@ -17,6 +18,8 @@ public class EnemyRobotController : RobotController {
 
 		//Enemy Robots Default to Facing Left
 		_isFacingRight = !_isFacingRight;
+
+		_robotEnemyMaterialHandler = GetComponent<RobotEnemyMaterialHandler> ();
 	}
 
 	public void InitializeEnemy(int posX, int posY, PlayerMoveSet[] parsedCommands){
@@ -106,9 +109,9 @@ public class EnemyRobotController : RobotController {
 
 	}
 
-//	public override float Rest() {
-//		return _restDuration;
-//	}
+	public void DestroyEnemyRobot(){
+		StartCoroutine(_robotEnemyMaterialHandler.DestroyEnemy ());
+	}
 
 	void HandleEnemyMove(){
 		PlayerMoveSet tempMoveSet = _enemyMoveSetArray [_currentMoveIndex];

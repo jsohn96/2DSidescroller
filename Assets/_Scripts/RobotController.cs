@@ -14,7 +14,13 @@ public class RobotController : MonoBehaviour {
 	protected int _attackAnimHash = Animator.StringToHash("Punch");
 
 	protected int _currentHorizontalIndex;
+	public int CurrentHorizontalIndex {
+		get{ return _currentHorizontalIndex; }
+	}
 	protected int _currentVerticalIndex;
+	public int CurrentVerticalIndex {
+		get{ return _currentVerticalIndex; }
+	}
 
 	[SerializeField] protected Animator _robotAnim;
 

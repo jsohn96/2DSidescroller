@@ -15,6 +15,9 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 	float _outlineWidthValue = 1.033f;
 	float _outlineNormalExtrusionValue = 0.038f;
 
+	float _maxDamageExtrusionValue = 2.0f;
+	bool _isBeingDestroyed = false;
+
 
 	void Awake(){
 		// Make a copy of the material to have a unique copy for this robot
@@ -39,12 +42,29 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 	}
 
 	void OnMouseEnter(){
-		_material.SetFloat (_outlineWidth, _outlineWidthValue);
-		_material.SetFloat (_outlineNormalExtrusion, _outlineNormalExtrusionValue);
+		if (!_isBeingDestroyed) {
+			_material.SetFloat (_outlineWidth, _outlineWidthValue);
+			_material.SetFloat (_outlineNormalExtrusion, _outlineNormalExtrusionValue);
+		}
 	}
 
 	void OnMouseExit(){
-		_material.SetFloat (_outlineWidth, 0.0f);
-		_material.SetFloat (_outlineNormalExtrusion, 0.0f);
+		if (!_isBeingDestroyed) {
+			_material.SetFloat (_outlineWidth, 0.0f);
+			_material.SetFloat (_outlineNormalExtrusion, 0.0f);
+		}
+	}
+
+	public IEnumerator DestroyEnemy() {
+		yield return new WaitForSeconds (1.4f);
+		float timer = 0f;
+		float duration = 0.5f;
+		while (timer < duration) {
+			timer += Time.deltaTime;
+			_material.SetFloat(_outlineNormalExtrusion, Mathf.Lerp (0.0f, _maxDamageExtrusionValue, timer / duration));
+			yield return null;
+		}
+		gameObject.SetActive (false);
+		yield return null;
 	}
 }
