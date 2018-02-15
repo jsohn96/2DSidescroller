@@ -5,9 +5,34 @@ using UnityEngine;
 public class PlayerRobotController : RobotController {
 
 	public override float Attack (bool isLeft) {
-		//TODO: Process the bool value for Left Right
+		if (isLeft) {
+			if (_isFacingRight) {
+				StartCoroutine (TurnAround ());
+			}
+			if (_currentHorizontalIndex > 0) {
+				HandleAttack (_currentHorizontalIndex - 1, isLeft);
+			}
+		} else {
+			if (!_isFacingRight) {
+				StartCoroutine (TurnAround ());
+			}
+			if (_currentHorizontalIndex < _tileGridData.horizontalTileCnt) {
+				HandleAttack (_currentHorizontalIndex, isLeft);
+			}
+		}
 		_robotAnim.SetTrigger (_attackAnimHash);
 		return _attackDuration;
+	}
+
+	void HandleAttack(int punchTargetIndex, bool isLeft){
+		if (_currentHorizontalIndex < _tileGridData.horizontalTileCnt) {
+			Tile tile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex, _currentVerticalIndex);
+			if (tile.isWall) {
+				StartCoroutine(LevelGenerator._levelGeneratorInstance.BreakWall (punchTargetIndex, _currentVerticalIndex));
+				tile.isWall = false;
+				LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex, _currentVerticalIndex, tile);
+			}
+		}
 	}
 
 	public override float Jump(bool isUp) {
@@ -118,10 +143,12 @@ public class PlayerRobotController : RobotController {
 
 
 	public override float Rest() {
+		_toggleRest.BeginContemplatingExistence ();
 		return _restDuration;
 	}
 
 	TileGridData _tileGridData;
+	[SerializeField] ToggleRest _toggleRest;
 		
 	void Start(){
 		//Initialize Position to 0,0

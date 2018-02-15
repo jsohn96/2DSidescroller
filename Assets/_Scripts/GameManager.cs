@@ -54,6 +54,15 @@ public class GameManager : MonoBehaviour {
 		HandleCurrentState ();
 	}
 
+	void Update(){
+		//Debug Key to speed up time
+		if (Input.GetKeyDown (KeyCode.LeftControl)) {
+			Time.timeScale = 3.0f;
+		} else if (Input.GetKeyUp(KeyCode.LeftControl)) {
+			Time.timeScale = 1.0f;
+		}
+	}
+
 	public void MoveToNextState(){
 		switch (_currentPlayState) {
 		case PlayState.Strategize:

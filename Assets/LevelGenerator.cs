@@ -61,6 +61,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	//Nested Array of Tiles to store level data
 	Tile[,] _tiles;
+	GameObject[,] _tileGameObject;
 
 	Quaternion _identityQuaternion = new Quaternion(0f, 0f, 0f, 1f);
 	Quaternion _enemyRobotFacingLeftRotation = new Quaternion (0f, -0.707f, 0f, 0.707f);
@@ -68,12 +69,17 @@ public class LevelGenerator : MonoBehaviour {
 	[SerializeField] string[] _paths;
 	char[] _delimiter = new char[1]{'|'};
 
+	[Header("Sprite References for destructable walls")]
+	[SerializeField] Sprite _floorSprite;
+	[SerializeField] Sprite _jumpSprite;
+
 	void Awake(){
 		_levelGeneratorInstance = this;
 	}
 
 	void Start(){
 		_tiles = new Tile[_tileGridData.horizontalTileCnt, _tileGridData.verticalTileCnt];
+		_tileGameObject = new GameObject[_tileGridData.horizontalTileCnt, _tileGridData.verticalTileCnt];
 
 		//Create a default version of the level expected to be populated later
 		InitializeLevel ();
@@ -110,14 +116,14 @@ public class LevelGenerator : MonoBehaviour {
 
 				if (tempTile.isJump) {
 					if (tempTile.isWall) {
-						Instantiate (_tileJumpWallPrefab, tempPos, _identityQuaternion, this.transform);
+						_tileGameObject[j,i] = Instantiate (_tileJumpWallPrefab, tempPos, _identityQuaternion, this.transform);
 					} else {
-						Instantiate (_tileJumpPrefab, tempPos, _identityQuaternion, this.transform);
+						_tileGameObject[j,i] = Instantiate (_tileJumpPrefab, tempPos, _identityQuaternion, this.transform);
 					}
 				} else if (tempTile.isWall) {
-					Instantiate (_tileWallPrefab, tempPos, _identityQuaternion, this.transform);
+					_tileGameObject[j,i] = Instantiate (_tileWallPrefab, tempPos, _identityQuaternion, this.transform);
 				} else {
-					Instantiate (_tileFloorPrefab, tempPos, _identityQuaternion, this.transform);
+					_tileGameObject[j,i] = Instantiate (_tileFloorPrefab, tempPos, _identityQuaternion, this.transform);
 				}
 			}
 		}
@@ -150,7 +156,17 @@ public class LevelGenerator : MonoBehaviour {
 	public TileGridData GetTileGridData(){
 		return _tileGridData;
 	}
-		
+
+	//Swap the sprites of broken wall to sprite without wall
+	public IEnumerator BreakWall(int hCnt, int vCnt){
+		float duration = 1.4f;
+		yield return new WaitForSeconds (duration);
+		if (_tiles [hCnt, vCnt].isJump) {
+			_tileGameObject [hCnt, vCnt].GetComponent<SpriteRenderer> ().sprite = _jumpSprite;
+		} else {
+			_tileGameObject [hCnt, vCnt].GetComponent<SpriteRenderer> ().sprite = _floorSprite;
+		}
+	}
 
 	void ReadTextFile(string path){
 		StreamReader stream = new StreamReader (path);
