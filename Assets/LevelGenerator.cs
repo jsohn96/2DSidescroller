@@ -9,13 +9,32 @@ public struct Tile {
 	public bool isWall;
 	public bool isJump;
 	public bool isOccupied;
+	public bool isPlayer;
 
-	public Tile(float xAxis, float yAxis, bool hasWall, bool canJump, bool occupied){
+	public Tile(float xAxis, float yAxis, bool hasWall, bool canJump, bool occupied, bool player){
 		x = xAxis;
 		y = yAxis;
 		isWall = hasWall;
 		isJump = canJump;
 		isOccupied = occupied;
+		isPlayer = player;
+	}
+}
+
+[System.Serializable]
+public struct TileGridData {
+	public int verticalTileCnt;
+	public int horizontalTileCnt;
+	public float tileWidth;
+	public float tileHeight;
+	public float robotFootingOffset;
+
+	public TileGridData (int VerticalTileCnt, int HorizontalTileCnt, float TileWidth, float TileHeight, float RobotFootingOffset){
+		verticalTileCnt = VerticalTileCnt;
+		horizontalTileCnt = HorizontalTileCnt;
+		tileWidth = TileWidth;
+		tileHeight = TileHeight;
+		robotFootingOffset = RobotFootingOffset;
 	}
 }
 
@@ -25,14 +44,10 @@ public class LevelGenerator : MonoBehaviour {
 	 * --> Progressively Store level data --> Instantiate enemies 
 	 * --> Instantiate Level 
 	 */
+	public static LevelGenerator _levelGeneratorInstance;
 
-	[SerializeField] int _verticalTileCnt = 5;
-	[SerializeField] int _horizontalTileCnt = 9;
 
-	[SerializeField] float _tileWidth = 1.32f;
-	[SerializeField] float _tileHeight = 1.32f;
-
-	float _robotFootingOffset = -0.33f;
+	[SerializeField] TileGridData _tileGridData = new TileGridData(5, 9, 1.32f, 1.32f, -0.33f);
 
 	[SerializeField] Vector3 _initialPos;
 
@@ -53,9 +68,12 @@ public class LevelGenerator : MonoBehaviour {
 	[SerializeField] string[] _paths;
 	char[] _delimiter = new char[1]{'|'};
 
+	void Awake(){
+		_levelGeneratorInstance = this;
+	}
 
 	void Start(){
-		_tiles = new Tile[_horizontalTileCnt, _verticalTileCnt];
+		_tiles = new Tile[_tileGridData.horizontalTileCnt, _tileGridData.verticalTileCnt];
 
 		//Create a default version of the level expected to be populated later
 		InitializeLevel ();
@@ -69,20 +87,22 @@ public class LevelGenerator : MonoBehaviour {
 
 	//intialize the nested Array of tiles to be used for generating level
 	void InitializeLevel() {
-		for (int i = 0; i < _verticalTileCnt; i++) {
-			for (int j = 0; j < _horizontalTileCnt; j++) {
-				float xAxis = (j) * _tileHeight + _initialPos.x;
-				float yAxis = (i) * _tileWidth + _initialPos.y;
-				_tiles [j, i] = new Tile (xAxis, yAxis, false, false, false);
+		for (int i = 0; i < _tileGridData.verticalTileCnt; i++) {
+			for (int j = 0; j < _tileGridData.horizontalTileCnt; j++) {
+				float xAxis = (j) * _tileGridData.tileHeight + _initialPos.x;
+				float yAxis = (i) * _tileGridData.tileWidth + _initialPos.y;
+				_tiles [j, i] = new Tile (xAxis, yAxis, false, false, false, false);
 			}
 		}
+		// Player will always default to position 0,0 upon start
+		_tiles [0, 0].isPlayer = true;
 	}
 
 
 	//Traverse the nested array of tiles to instantiate the level tiles
 	void GenerateLevel(){
-		for (int i = 0; i < _verticalTileCnt; i++) {
-			for (int j = 0; j < _horizontalTileCnt; j++) {
+		for (int i = 0; i < _tileGridData.verticalTileCnt; i++) {
+			for (int j = 0; j < _tileGridData.horizontalTileCnt; j++) {
 				Tile tempTile = _tiles [j, i];
 				Vector3 tempPos = _initialPos;
 				tempPos.x = tempTile.x;
@@ -110,17 +130,25 @@ public class LevelGenerator : MonoBehaviour {
 		//get position data for enemy
 		Vector3 tempPos;
 		tempPos.x = _tiles [horizontal, vertical].x;
-		tempPos.y = _tiles [horizontal, vertical].y + _robotFootingOffset;
+		tempPos.y = _tiles [horizontal, vertical].y + _tileGridData.robotFootingOffset;
 		tempPos.z = -1f;
 		GameObject tempEnemyObject = Instantiate (_enemyRobotPrefab, tempPos, _enemyRobotFacingLeftRotation, this.transform);
 		_tempEnemyRobotController = tempEnemyObject.GetComponent<EnemyRobotController>();
-		_tempEnemyRobotController.InitializeEnemy (enemyMoveSet);
+		_tempEnemyRobotController.InitializeEnemy (horizontal, vertical, enemyMoveSet);
 	}
 
 
 	// Allow Robots to Get Tile information to determine whether action is valid
 	public Tile GetTile(int hCnt, int vCnt){
 		return _tiles [hCnt, vCnt];
+	}
+
+	public void SetTile(int hCnt, int vCnt, Tile tile){
+		_tiles [hCnt, vCnt] = tile;
+	}
+
+	public TileGridData GetTileGridData(){
+		return _tileGridData;
 	}
 		
 
@@ -148,7 +176,7 @@ public class LevelGenerator : MonoBehaviour {
 		if (lineCnt < 5) {
 			int length = line.Length;
 			int y = 4 - lineCnt;
-			int x = length < _horizontalTileCnt ? length : _horizontalTileCnt;
+			int x = length < _tileGridData.horizontalTileCnt ? length : _tileGridData.horizontalTileCnt;
 			for (int i = 0; i < x; i++) {
 				Tile tempTile = _tiles [i, y];
 				switch (line [i]) {

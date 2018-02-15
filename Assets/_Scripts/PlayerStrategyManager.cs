@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStrategyManager : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class PlayerStrategyManager : MonoBehaviour {
 	[SerializeField] PlayerCommandManager _playerCommandManager;
 
 	[SerializeField] CommandDeck _commandDeck;
+
+	[SerializeField] Button _confirmButton;
 
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;
@@ -33,6 +36,7 @@ public class PlayerStrategyManager : MonoBehaviour {
 		_playerCommandManager.FeedInCommands (_tentativePlayerMoveSet);
 		GameManager._gameManagerInstance.MoveToNextState ();
 		RemoveConfirmedCardsFromPlay (slotCnt);
+		_confirmButton.interactable = false;
 	}
 
 	void ReturnAllCardsToHand(int slotCnt){
@@ -43,11 +47,13 @@ public class PlayerStrategyManager : MonoBehaviour {
 
 	void RemoveConfirmedCardsFromPlay(int slotCnt){
 		for (int i = 0; i < slotCnt; i++) {
-			_commandDeck.CommandCardsInPlay--;
 			_slots [i].RemoveOccupant ();
+			_commandDeck.CommandCardsInPlay--;
 		}
+
 	}
 
 	public void BeginPlayerStrategy(){
+		_confirmButton.interactable = true;
 	}
 }

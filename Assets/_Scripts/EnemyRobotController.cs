@@ -11,7 +11,9 @@ public class EnemyRobotController : RobotController {
 	int _currentMoveIndex = 0;
 
 
-	public void InitializeEnemy(PlayerMoveSet[] parsedCommands){
+	public void InitializeEnemy(int posX, int posY, PlayerMoveSet[] parsedCommands){
+		_currentHorizontalIndex = posX;
+		_currentVerticalIndex = posY;
 		_enemyMoveSetArray = parsedCommands;
 		_thisEnemyMovesetLength = _enemyMoveSetArray.Length;
 	}
