@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
 
 	[SerializeField] GameStateUI _gameStateUI;
 	[SerializeField] TogglePlayerStrategyUI _togglePlayerStrategyUI;
+	[SerializeField] CameraManager _cameraManager;
 
 	void Awake(){
 //		if (_gameManagerInstance == null) {
@@ -89,10 +90,12 @@ public class GameManager : MonoBehaviour {
 			_gameStateUI.SwitchStateUI (_currentPlayState);
 			_togglePlayerStrategyUI.ToggleStrategyPhaseOn (true);
 			_playerStrategyManager.BeginPlayerStrategy ();
+			_cameraManager.SwitchToStrategyPhase ();
 			break;
 		case PlayState.PlayerTurn:
 			_gameStateUI.SwitchStateUI (_currentPlayState);
 			_playerCommandManager.BeginPlayerCommand ();
+			_cameraManager.SwitchToActionPhase ();
 			break;
 		case PlayState.EnemyTurn:
 			_gameStateUI.SwitchStateUI (_currentPlayState);

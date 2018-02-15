@@ -11,7 +11,7 @@ public class EnemyTurnManager : MonoBehaviour {
 
 	//preset overestimate of duration to wait 
 	//account for all enemy movement durations
-	float _longestWaitDuration = 3f;
+	float _longestWaitDuration = 2.2f;
 
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;

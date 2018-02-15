@@ -34,6 +34,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 				outlineMaterialIndex++;
 			}
 		}
+		TurnOffOutline ();
 	}
 
 	void OnMouseEnter(){
@@ -44,6 +45,10 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	}
 
 	void OnMouseExit(){
+		TurnOffOutline ();
+	}
+
+	void TurnOffOutline(){
 		for (int i = 0; i < _outlineMaterialsLength; i++) {
 			_outlineMaterials[i].SetFloat (_outlineWidth, 0.0f);
 			_outlineMaterials[i].SetFloat (_outlineNormalExtrusion, 0.0f);

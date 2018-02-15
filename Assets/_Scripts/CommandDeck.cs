@@ -8,7 +8,7 @@ public class CommandDeck : MonoBehaviour {
 	public int CommandCardsInPlay {
 		get{ return _commandCardsInPlay; }
 		set { _commandCardsInPlay = value; 
-			_numberText.text = _leftOverCardString [5 - _commandCardsInPlay];}
+			_numberText.text = _leftOverCardString [7 - _commandCardsInPlay];}
 	}
 	int _totalCardCnt;
 
@@ -21,10 +21,10 @@ public class CommandDeck : MonoBehaviour {
 
 
 	[SerializeField] Text _numberText;
-	string[] _leftOverCardString = new string[6]{"0", "1","2","3","4","5"};
+	string[] _leftOverCardString = new string[8]{"0", "1","2","3","4","5","6","7"};
 
 	void Start(){
-		_totalCardCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn + 2;
+		_totalCardCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn + 4;
 	}
 
 	//Draw a command card from the deck and place it into the hand
@@ -42,9 +42,9 @@ public class CommandDeck : MonoBehaviour {
 				_commandSprites [_prevDrawnMove], 
 				(PlayerMoveSet)_prevDrawnMove);
 			_commandCardsInPlay++;
-			_numberText.text = _leftOverCardString [5 - _commandCardsInPlay];
+			_numberText.text = _leftOverCardString [7 - _commandCardsInPlay];
 		} else {
-			if (_commandCardPoolIterator >= 4) {
+			if (_commandCardPoolIterator >= 6) {
 				_commandCardPoolIterator = 0;
 			} else {
 				_commandCardPoolIterator++;
@@ -54,15 +54,36 @@ public class CommandDeck : MonoBehaviour {
 	}
 
 
-
+	//Randomly drawn card with some weighted value
 	// Use recursion to prevent drawing the same commands in a row
-	// May need to have weighted values upon testing
+	//not repeating cards 0, 2, 5, 6
 	int SelectRandomMoveset(){
-		int drawnMove = Random.Range (0, 7);
-		if (drawnMove == _prevDrawnMove) {
-			return SelectRandomMoveset ();
+		int drawnCard;
+		int randomNumber = Random.Range (0, 100);
+		if (randomNumber < 8) {
+			drawnCard = 0;
+		} else if (randomNumber < 20) {
+			drawnCard = 1;
+		} else if (randomNumber < 28) {
+			drawnCard = 2;
+		} else if (randomNumber < 54) {
+			drawnCard = 3;
+		} else if (randomNumber < 78) {
+			drawnCard = 4;
+		} else if (randomNumber < 88) {
+			drawnCard = 5;
 		} else {
-			return drawnMove;
+			drawnCard = 6;
+		}
+
+		if (drawnCard == _prevDrawnMove) {
+			if (drawnCard == 0 || drawnCard == 2) {
+				return SelectRandomMoveset ();
+			} else {
+				return drawnCard;
+			}
+		} else {
+			return drawnCard;
 		}
 	}
 }
