@@ -26,6 +26,11 @@ public class GameManager : MonoBehaviour {
 	PlayState _currentPlayState = PlayState.Strategize;
 			
 	public static GameManager _gameManagerInstance = null;
+	int _damageCnt = 0;
+	public int DamageCnt {
+		get { return _damageCnt; }
+		set { _damageCnt = value; }
+	}
 
 	public int HowManyMovesPerTurn {
 		get {return _howManyMovesPerTurn; }

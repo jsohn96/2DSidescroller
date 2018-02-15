@@ -63,25 +63,25 @@ public class PlayerRobotController : RobotController {
 		}
 		if (!isJump) {
 			//Handle Running into a wall
-//			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
-//			StartCoroutine (LerpMovementFail (transform.position, goalPos, _moveDuration, true));
 			_robotAnim.SetTrigger (_jumpAnimHash);
-		} else if (tile.isOccupied) {
-			// show being attacked
-			//  Move to place?
 		} else {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
-			StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
-			_robotAnim.SetTrigger (_jumpAnimHash);
+			if (tile.isOccupied) {
+				_playerRobotMaterialHandler.TakeDamage ();
+				StartCoroutine (LerpFailedMovement(transform.position, goalPos, _moveDuration));
+			} else {
+				StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
+				_robotAnim.SetTrigger (_jumpAnimHash);
 
-			//Set the previous tile to reflect player absence
-			tempCurrentTile.isPlayer = false;
-			LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
+				//Set the previous tile to reflect player absence
+				tempCurrentTile.isPlayer = false;
+				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
 
-			//set the current tile to reflect player presence
-			_currentVerticalIndex = yIndex;
-			tile.isPlayer = true;
-			LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
+				//set the current tile to reflect player presence
+				_currentVerticalIndex = yIndex;
+				tile.isPlayer = true;
+				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
+			}
 		}
 	}
 
@@ -95,7 +95,6 @@ public class PlayerRobotController : RobotController {
 			goalXIndex = _currentHorizontalIndex - 1;
 			if (goalXIndex >= 0) {
 				HandleMovement (goalXIndex, isLeft);
-
 			}
 		} else {
 			if (!_isFacingRight) {
@@ -107,6 +106,7 @@ public class PlayerRobotController : RobotController {
 				HandleMovement (goalXIndex, isLeft);
 			}
 		}
+		_robotAnim.SetTrigger (_walkAnimHash);
 		return _moveDuration;
 	}
 
@@ -121,23 +121,24 @@ public class PlayerRobotController : RobotController {
 		}
 		if (isWall) {
 			//Handle Running into a wall
-			_robotAnim.SetTrigger (_walkAnimHash);
-		} else if (tile.isOccupied) {
-			// show being attacked
-			//  Move to place
+
 		} else {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
-			StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
-			_robotAnim.SetTrigger (_walkAnimHash);
+			if (tile.isOccupied) {
+				_playerRobotMaterialHandler.TakeDamage ();
+				StartCoroutine (LerpFailedMovement(transform.position, goalPos, _moveDuration));
+			} else {
+				StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
 
-			//Set the previous tile to reflect player absence
-			tempCurrentTile.isPlayer = false;
-			LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
+				//Set the previous tile to reflect player absence
+				tempCurrentTile.isPlayer = false;
+				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
 
-			//set the current tile to reflect player presence
-			_currentHorizontalIndex = xIndex;
-			tile.isPlayer = true;
-			LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
+				//set the current tile to reflect player presence
+				_currentHorizontalIndex = xIndex;
+				tile.isPlayer = true;
+				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
+			}
 		}
 	}
 
@@ -149,6 +150,7 @@ public class PlayerRobotController : RobotController {
 
 	TileGridData _tileGridData;
 	[SerializeField] ToggleRest _toggleRest;
+	[SerializeField] PlayerRobotMaterialHandler _playerRobotMaterialHandler;
 		
 	void Start(){
 		//Initialize Position to 0,0
@@ -190,22 +192,15 @@ public class PlayerRobotController : RobotController {
 		return waitDuration + 0.5f;
 	}
 
-
-
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.A)) {
-			Move (true);
-		} else if (Input.GetKeyUp(KeyCode.A)) {
-			Move (false);
+	//Lerp the player robot to simulate being thwarted by an enemy robot
+	IEnumerator LerpFailedMovement(Vector3 startPos, Vector3 goalPos, float duration){
+		float timer = 0f;
+		while (timer < duration) {
+			timer += Time.deltaTime;
+			transform.position = Vector3.Lerp (startPos, goalPos, _failedMovement.Evaluate(timer / duration));
+			yield return null;
 		}
-		if(Input.GetKeyDown(KeyCode.Space)){
-			Jump (true);
-		}
-		if(Input.GetKeyDown(KeyCode.LeftShift)){
-			Attack (true);
-		}
-		if (Input.GetKeyDown (KeyCode.T)) {
-			StartCoroutine (TurnAround ());
-		}
+		transform.position = startPos;
+		yield return null;
 	}
 }

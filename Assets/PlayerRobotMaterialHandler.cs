@@ -13,6 +13,12 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	int _outlineNormalExtrusion;
 	float _outlineWidthValue = 1.033f;
 	float _outlineNormalExtrusionValue = 0.038f;
+	float _maxDamageExtrustionValue = 2.0f;
+
+	bool _isTakingDamage = false;
+	[SerializeField] AnimationCurve _damageImpactCurve;
+	Color _originColor = new Color (0f, 1f, 0f, 1f);
+	Color _damagedColor = new Color(1.0f, 0f, 0f, 1f);
 
 	void Start(){
 		//Get Property ID of the properties that will be edited
@@ -38,9 +44,11 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	}
 
 	void OnMouseEnter(){
-		for (int i = 0; i < _outlineMaterialsLength; i++) {
-			_outlineMaterials[i].SetFloat (_outlineWidth, _outlineWidthValue);
-			_outlineMaterials[i].SetFloat (_outlineNormalExtrusion, _outlineNormalExtrusionValue);
+		if (!_isTakingDamage) {
+			for (int i = 0; i < _outlineMaterialsLength; i++) {
+				_outlineMaterials [i].SetFloat (_outlineWidth, _outlineWidthValue);
+				_outlineMaterials [i].SetFloat (_outlineNormalExtrusion, _outlineNormalExtrusionValue);
+			}
 		}
 	}
 
@@ -49,12 +57,43 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	}
 
 	void TurnOffOutline(){
-		for (int i = 0; i < _outlineMaterialsLength; i++) {
-			_outlineMaterials[i].SetFloat (_outlineWidth, 0.0f);
-			_outlineMaterials[i].SetFloat (_outlineNormalExtrusion, 0.0f);
+		if (!_isTakingDamage) {
+			for (int i = 0; i < _outlineMaterialsLength; i++) {
+				_outlineMaterials [i].SetFloat (_outlineWidth, 0.0f);
+				_outlineMaterials [i].SetFloat (_outlineNormalExtrusion, 0.0f);
+			}
 		}
 	}
 
-	//TODO: Change Color of the outline based on proximity to enemy?
-	// May be better to have this on the enemy
+	public void TakeDamage(){
+		TurnOffOutline ();
+		_isTakingDamage = true;
+		GameManager._gameManagerInstance.DamageCnt++;
+		StartCoroutine (TakingDamage ());
+	}
+
+	IEnumerator TakingDamage(){
+		for (int i = 0; i < _outlineMaterialsLength; i++) {
+			_outlineMaterials [i].SetColor (_outlineColor, _damagedColor);
+		}
+		yield return new WaitForSeconds (0.8f);
+		float timer = 0f;
+		float duration = 0.8f;
+		float impactValue;
+		while (timer < duration){
+			timer += Time.deltaTime;
+			impactValue = Mathf.Lerp (0.0f, _maxDamageExtrustionValue, _damageImpactCurve.Evaluate(timer / duration));
+			for (int i = 0; i < _outlineMaterialsLength; i++) {
+				_outlineMaterials [i].SetFloat (_outlineNormalExtrusion, impactValue);
+			}
+			yield return null;		
+		}
+		for (int i = 0; i < _outlineMaterialsLength; i++) {
+			_outlineMaterials [i].SetFloat (_outlineNormalExtrusion, 0.0f);
+		}
+		yield return null;
+		for (int i = 0; i < _outlineMaterialsLength; i++) {
+			_outlineMaterials [i].SetColor (_outlineColor, _originColor);
+		}
+	}
 }

@@ -24,7 +24,7 @@ public class RobotController : MonoBehaviour {
 	[SerializeField] AnimationCurve _walkMovement;
 	[SerializeField] AnimationCurve _jumpUpCurve;
 	[SerializeField] AnimationCurve _jumpDownCurve;
-	[SerializeField] AnimationCurve _failedMovement;
+	[SerializeField] protected AnimationCurve _failedMovement;
 
 	public virtual float Attack(bool isLeft) {
 		return _attackDuration;

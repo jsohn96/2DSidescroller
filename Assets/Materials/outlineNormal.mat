@@ -72,7 +72,7 @@ Material:
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Outline: 0.02
-    - _OutlineNormalExtrusion: 0.001
+    - _OutlineNormalExtrusion: 0
     - _OutlineWidth: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
