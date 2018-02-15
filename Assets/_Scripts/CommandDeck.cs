@@ -60,24 +60,24 @@ public class CommandDeck : MonoBehaviour {
 	int SelectRandomMoveset(){
 		int drawnCard;
 		int randomNumber = Random.Range (0, 100);
-		if (randomNumber < 8) {
+		if (randomNumber < 10) {
 			drawnCard = 0;
-		} else if (randomNumber < 20) {
+		} else if (randomNumber < 25) {
 			drawnCard = 1;
-		} else if (randomNumber < 28) {
+		} else if (randomNumber < 30) {
 			drawnCard = 2;
-		} else if (randomNumber < 54) {
+		} else if (randomNumber < 65) {
 			drawnCard = 3;
-		} else if (randomNumber < 78) {
+		} else if (randomNumber < 85) {
 			drawnCard = 4;
-		} else if (randomNumber < 88) {
+		} else if (randomNumber < 95) {
 			drawnCard = 5;
 		} else {
 			drawnCard = 6;
 		}
 
 		if (drawnCard == _prevDrawnMove) {
-			if (drawnCard == 0 || drawnCard == 2) {
+			if (drawnCard == 0 || drawnCard == 2 || drawnCard == 5 || drawnCard == 6) {
 				return SelectRandomMoveset ();
 			} else {
 				return drawnCard;

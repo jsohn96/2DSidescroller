@@ -7,6 +7,7 @@ public class GameStateUI : MonoBehaviour {
 	[SerializeField] Text _strategy;
 	[SerializeField] Text _playerAction;
 	[SerializeField] Text _enemyAction;
+	[SerializeField] Text _completed;
 
 	PlayState _prevPlayState = PlayState.Init;
 
@@ -22,6 +23,9 @@ public class GameStateUI : MonoBehaviour {
 			break;
 		case PlayState.EnemyTurn:
 			_enemyAction.enabled = true;
+			break;
+		case PlayState.Completed:
+			_completed.enabled = true;
 			break;
 		default:
 			break;

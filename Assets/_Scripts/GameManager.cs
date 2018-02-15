@@ -17,7 +17,8 @@ public enum PlayState {
 	Init = 0,
 	Strategize = 1,
 	PlayerTurn = 2,
-	EnemyTurn = 3
+	EnemyTurn = 3,
+	Completed = 4
 
 }
 
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] TogglePlayerStrategyUI _togglePlayerStrategyUI;
 	[SerializeField] CameraManager _cameraManager;
 
+	bool _gameCompleted = false;
+
 	void Awake(){
 //		if (_gameManagerInstance == null) {
 			_gameManagerInstance = this;
@@ -60,56 +63,57 @@ public class GameManager : MonoBehaviour {
 		HandleCurrentState ();
 	}
 
-	void Update(){
-		//Debug Key to speed up time
-		if (Input.GetKeyDown (KeyCode.LeftControl)) {
-			Time.timeScale = 3.0f;
-		} else if (Input.GetKeyUp(KeyCode.LeftControl)) {
-			Time.timeScale = 1.0f;
-		}
+	public void GameCompleted(){
+		_gameCompleted = true;
+		_currentPlayState = PlayState.Completed;
+		_gameStateUI.SwitchStateUI (_currentPlayState);
 	}
 
 	public void MoveToNextState(){
-		switch (_currentPlayState) {
-		case PlayState.Strategize:
-			_currentPlayState = PlayState.PlayerTurn;
-			_togglePlayerStrategyUI.ToggleStrategyPhaseOn (false);
-			break;
-		case PlayState.PlayerTurn:
+		if (!_gameCompleted) {
+			switch (_currentPlayState) {
+			case PlayState.Strategize:
+				_currentPlayState = PlayState.PlayerTurn;
+				_togglePlayerStrategyUI.ToggleStrategyPhaseOn (false);
+				break;
+			case PlayState.PlayerTurn:
 			//TODO: Check if this ends the game
-			_currentPlayState = PlayState.EnemyTurn;
-			break;
-		case PlayState.EnemyTurn:
+				_currentPlayState = PlayState.EnemyTurn;
+				break;
+			case PlayState.EnemyTurn:
 			//TODO: Check if this ends the game
-			_currentPlayState = PlayState.Strategize;
-			break;
-		default:
-			break;
+				_currentPlayState = PlayState.Strategize;
+				break;
+			default:
+				break;
+			}
+			HandleCurrentState ();
 		}
-		HandleCurrentState ();
 	}
 
 	void HandleCurrentState(){
-		switch (_currentPlayState) {
-		case PlayState.Strategize:
-			_gameStateUI.SwitchStateUI (_currentPlayState);
-			_togglePlayerStrategyUI.ToggleStrategyPhaseOn (true);
-			_playerStrategyManager.BeginPlayerStrategy ();
-			_cameraManager.SwitchCameraPhase ();
-			break;
-		case PlayState.PlayerTurn:
-			_gameStateUI.SwitchStateUI (_currentPlayState);
-			_playerCommandManager.BeginPlayerCommand ();
-			_cameraManager.SwitchCameraPhase ();
-			break;
-		case PlayState.EnemyTurn:
-			_gameStateUI.SwitchStateUI (_currentPlayState);
-			_enemyTurnManager.BeginEnemyTurn ();
-			_cameraManager.SwitchCameraPhase ();
+		if (!_gameCompleted) {
+			switch (_currentPlayState) {
+			case PlayState.Strategize:
+				_gameStateUI.SwitchStateUI (_currentPlayState);
+				_togglePlayerStrategyUI.ToggleStrategyPhaseOn (true);
+				_playerStrategyManager.BeginPlayerStrategy ();
+				_cameraManager.SwitchCameraPhase ();
+				break;
+			case PlayState.PlayerTurn:
+				_gameStateUI.SwitchStateUI (_currentPlayState);
+				_playerCommandManager.BeginPlayerCommand ();
+				_cameraManager.SwitchCameraPhase ();
+				break;
+			case PlayState.EnemyTurn:
+				_gameStateUI.SwitchStateUI (_currentPlayState);
+				_enemyTurnManager.BeginEnemyTurn ();
+				_cameraManager.SwitchCameraPhase ();
 
-			break;
-		default:
-			break;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

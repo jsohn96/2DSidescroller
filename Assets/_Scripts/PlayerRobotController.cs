@@ -38,11 +38,13 @@ public class PlayerRobotController : RobotController {
 					LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex, _currentVerticalIndex, tile);
 				}
 			} else {
-				Tile rightTile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex +1, _currentVerticalIndex);
-				if (rightTile.isOccupied) {
-					LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex + 1, _currentVerticalIndex);
-					rightTile.isOccupied = false;
-					LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex + 1, _currentVerticalIndex, rightTile);
+				if (punchTargetIndex + 1 < _tileGridData.horizontalTileCnt) {
+					Tile rightTile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex + 1, _currentVerticalIndex);
+					if (rightTile.isOccupied) {
+						LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex + 1, _currentVerticalIndex);
+						rightTile.isOccupied = false;
+						LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex + 1, _currentVerticalIndex, rightTile);
+					}
 				}
 			}
 		}
@@ -74,17 +76,13 @@ public class PlayerRobotController : RobotController {
 		} else {
 			isJump = tile.isJump;
 		}
-		if (!isJump) {
-			//Handle Running into a wall
-			_robotAnim.SetTrigger (_jumpAnimHash);
-		} else {
+		if (isJump) {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
 			if (tile.isOccupied) {
 				_playerRobotMaterialHandler.TakeDamage ();
 				StartCoroutine (LerpFailedMovement(transform.position, goalPos, _moveDuration));
 			} else {
 				StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
-				_robotAnim.SetTrigger (_jumpAnimHash);
 
 				//Set the previous tile to reflect player absence
 				tempCurrentTile.isPlayer = false;
@@ -95,6 +93,7 @@ public class PlayerRobotController : RobotController {
 				tile.isPlayer = true;
 				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
 			}
+			CheckWinCondition ();
 		}
 	}
 
@@ -132,10 +131,7 @@ public class PlayerRobotController : RobotController {
 		} else {
 			isWall = tile.isWall;
 		}
-		if (isWall) {
-			//Handle Running into a wall
-
-		} else {
+		if (!isWall) {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
 			if (tile.isOccupied) {
 				_playerRobotMaterialHandler.TakeDamage ();
@@ -152,6 +148,7 @@ public class PlayerRobotController : RobotController {
 				tile.isPlayer = true;
 				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tile);
 			}
+			CheckWinCondition ();
 		}
 	}
 
@@ -215,5 +212,13 @@ public class PlayerRobotController : RobotController {
 		}
 		transform.position = startPos;
 		yield return null;
+	}
+
+	void CheckWinCondition(){
+		if (_currentHorizontalIndex == _tileGridData.horizontalTileCnt - 1) {
+			if (_currentVerticalIndex == _tileGridData.verticalTileCnt - 1) {
+				GameManager._gameManagerInstance.GameCompleted();
+			}
+		}
 	}
 }

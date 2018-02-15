@@ -95,5 +95,6 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 		for (int i = 0; i < _outlineMaterialsLength; i++) {
 			_outlineMaterials [i].SetColor (_outlineColor, _originColor);
 		}
+		_isTakingDamage = false;
 	}
 }
