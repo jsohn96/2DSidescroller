@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitleScreen : MonoBehaviour {
 	Fading _fadeScript;
 	AsyncOperation async;
+	[SerializeField] Image _instructionImage;
 
 	void Start(){
 		_fadeScript = GameObject.Find ("Fade").GetComponent<Fading> ();
@@ -18,7 +20,7 @@ public class TitleScreen : MonoBehaviour {
 	}
 
 	public void ShowControls() {
-	
+		_instructionImage.enabled = !_instructionImage.enabled;
 	}
 
 	public void StartGame() {
