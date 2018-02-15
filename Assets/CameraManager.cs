@@ -4,53 +4,85 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour {
 	[SerializeField] Vector3 _strategyPhaseCameraPos;
-	[SerializeField] Vector3 _actionPhaseCameraPos;
+	[SerializeField] Vector3 _enemyActionPhaseCameraPos;
 	Camera _thisCamera;
 
-	float _strategyCamSize = 5f;
-	float _actionCamSize = 3.7f;
+	[SerializeField] Transform _playerRobot;
+	Vector3 _tempCamPos;
 
-	bool _isStrategyPhase = true;
+	float _strategyCamSize = 5f;
+	float _enemyActionCamSize = 3.7f;
+	float _playerActionCamSize = 2f;
+
+	// 0 - strategy Phase, 1 - PlayerAction Phase, 2 - EnemyAction Phase
+	int _playPhase = 0;
+	bool _transitioning = false;
+	bool _initialSizing = false;
 
 	void Start(){
 		_thisCamera = GetComponent<Camera> ();
+		_tempCamPos = _thisCamera.transform.position;
 	}
-		
-	public void SwitchToActionPhase(){
-		if (_isStrategyPhase) {
-			StartCoroutine (LerpCameraPos (_strategyPhaseCameraPos, _actionPhaseCameraPos, _strategyCamSize, _actionCamSize));
-			_isStrategyPhase = false;
+
+	void Update(){
+		if (_playPhase == 1 && !_transitioning) {
+			_thisCamera.transform.position = CalculatePlayerActionCamPosition ();
 		}
 	}
 
-	public void SwitchToStrategyPhase(){
-		if (!_isStrategyPhase) {
-			StartCoroutine (LerpCameraPos (_actionPhaseCameraPos, _strategyPhaseCameraPos, _actionCamSize, _strategyCamSize));
-			_isStrategyPhase = true;
+	Vector3 CalculatePlayerActionCamPosition(){
+		_tempCamPos.x = _playerRobot.position.x;
+		_tempCamPos.y = _playerRobot.position.y + 0.8f;
+		return _tempCamPos;
+	}
+		
+	public void SwitchCameraPhase(){
+		// Prevent the Camera Lerp on first scene load
+		if (!_initialSizing) {
+			_initialSizing = true;
+		} else {
+			if (!_transitioning) {
+				StartCoroutine (LerpCameraPos ());
+			}
 		}
 	}
 
 	// Lerp Camera Between the two phase position
-	IEnumerator LerpCameraPos(Vector3 origin, Vector3 goal, float originSize, float goalSize){
+	IEnumerator LerpCameraPos(){
+		_transitioning = true;
 		float timer = 0f;
-		float duration = 1f;
+		float duration = 1.2f;
 		while (timer < duration) {
 			timer += Time.deltaTime;
-			transform.position = Vector3.Lerp (origin, goal, timer / duration);
-			_thisCamera.orthographicSize = Mathf.Lerp (originSize, goalSize, timer / duration);
+			if (_playPhase == 0) {
+				transform.position = Vector3.Lerp (_strategyPhaseCameraPos, CalculatePlayerActionCamPosition(), timer / duration);
+				_thisCamera.orthographicSize = Mathf.Lerp (_strategyCamSize, _playerActionCamSize, timer / duration);
+			} else if (_playPhase == 1) {
+				transform.position = Vector3.Lerp (_tempCamPos, _enemyActionPhaseCameraPos, timer / duration);
+				_thisCamera.orthographicSize = Mathf.Lerp (_playerActionCamSize, _enemyActionCamSize, timer / duration);
+			} else {
+				transform.position = Vector3.Lerp (_enemyActionPhaseCameraPos, _strategyPhaseCameraPos, timer / duration);
+				_thisCamera.orthographicSize = Mathf.Lerp (_enemyActionCamSize, _strategyCamSize, timer / duration);
+			}
 			yield return null;
 		}
-		transform.position = goal;
-		_thisCamera.orthographicSize = goalSize;
-		yield return null;
-	}
 
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.T)) {
-			SwitchToActionPhase ();
+		if (_playPhase == 0) {
+			transform.position = CalculatePlayerActionCamPosition();
+			_thisCamera.orthographicSize = _playerActionCamSize;
+		} else if (_playPhase == 1) {
+			transform.position = _enemyActionPhaseCameraPos;
+			_thisCamera.orthographicSize = _enemyActionCamSize;
+		} else {
+			transform.position = _strategyPhaseCameraPos;
+			_thisCamera.orthographicSize = _strategyCamSize;
 		}
-		if (Input.GetKeyDown (KeyCode.Y)) {
-			SwitchToStrategyPhase ();	
+		yield return null;
+		if (_playPhase == 2) {
+			_playPhase = 0;
+		} else {
+			_playPhase++;
 		}
+		_transitioning = false;
 	}
 }

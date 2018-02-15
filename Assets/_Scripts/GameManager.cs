@@ -90,16 +90,17 @@ public class GameManager : MonoBehaviour {
 			_gameStateUI.SwitchStateUI (_currentPlayState);
 			_togglePlayerStrategyUI.ToggleStrategyPhaseOn (true);
 			_playerStrategyManager.BeginPlayerStrategy ();
-			_cameraManager.SwitchToStrategyPhase ();
+			_cameraManager.SwitchCameraPhase ();
 			break;
 		case PlayState.PlayerTurn:
 			_gameStateUI.SwitchStateUI (_currentPlayState);
 			_playerCommandManager.BeginPlayerCommand ();
-			_cameraManager.SwitchToActionPhase ();
+			_cameraManager.SwitchCameraPhase ();
 			break;
 		case PlayState.EnemyTurn:
 			_gameStateUI.SwitchStateUI (_currentPlayState);
 			_enemyTurnManager.BeginEnemyTurn ();
+			_cameraManager.SwitchCameraPhase ();
 
 			break;
 		default:
