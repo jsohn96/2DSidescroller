@@ -811,8 +811,14 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0.26940474
+      outSlope: 0.26940474
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.26887038
+      value: 0.12979533
+      inSlope: 2.0465255
+      outSlope: 2.0465255
       tangentMode: 0
     - serializedVersion: 2
       time: 0.86709595
@@ -878,6 +884,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   _enemyMoveSetArray: 
+  _playerRobotController: {fileID: 0}
 --- !u!114 &114836742791992230
 MonoBehaviour:
   m_ObjectHideFlags: 1

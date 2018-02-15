@@ -87,7 +87,8 @@ public class PlayerRobotController : RobotController {
 				//Set the previous tile to reflect player absence
 				tempCurrentTile.isPlayer = false;
 				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
-
+				_priorVerticalIndex = _currentVerticalIndex;
+				_priorHorizontalIndex = _currentHorizontalIndex;
 				//set the current tile to reflect player presence
 				_currentVerticalIndex = yIndex;
 				tile.isPlayer = true;
@@ -142,7 +143,8 @@ public class PlayerRobotController : RobotController {
 				//Set the previous tile to reflect player absence
 				tempCurrentTile.isPlayer = false;
 				LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, tempCurrentTile);
-
+				_priorVerticalIndex = _currentVerticalIndex;
+				_priorHorizontalIndex = _currentHorizontalIndex;
 				//set the current tile to reflect player presence
 				_currentHorizontalIndex = xIndex;
 				tile.isPlayer = true;
@@ -161,6 +163,9 @@ public class PlayerRobotController : RobotController {
 	TileGridData _tileGridData;
 	[SerializeField] ToggleRest _toggleRest;
 	[SerializeField] PlayerRobotMaterialHandler _playerRobotMaterialHandler;
+
+	int _priorHorizontalIndex = 0;
+	int _priorVerticalIndex = 0;
 		
 	void Start(){
 		//Initialize Position to 0,0
@@ -202,6 +207,31 @@ public class PlayerRobotController : RobotController {
 		return waitDuration + 0.5f;
 	}
 
+	public void AttackedByEnemy(){
+		_playerRobotMaterialHandler.TakeDamage ();
+		Tile currentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
+		Tile priorTile = LevelGenerator._levelGeneratorInstance.GetTile (_priorHorizontalIndex, _priorVerticalIndex);
+		Debug.Log (_priorHorizontalIndex);
+		Debug.Log ("vert " + _priorVerticalIndex);
+		Vector3 goalPos = new Vector3 (priorTile.x, priorTile.y + _tileGridData.robotFootingOffset, -1f);
+		StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
+
+		priorTile.isPlayer = true;
+		currentTile.isPlayer = false;
+
+		LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, currentTile);
+		LevelGenerator._levelGeneratorInstance.SetTile (_priorHorizontalIndex, _priorVerticalIndex, priorTile);
+
+		int tempH;
+		int tempV;
+		tempH = _priorHorizontalIndex;
+		tempV = _priorVerticalIndex;
+		_priorHorizontalIndex = _currentHorizontalIndex;
+		_priorVerticalIndex = _currentVerticalIndex;
+		_currentHorizontalIndex = tempH;
+		_currentVerticalIndex = tempV;
+	}
+
 	//Lerp the player robot to simulate being thwarted by an enemy robot
 	IEnumerator LerpFailedMovement(Vector3 startPos, Vector3 goalPos, float duration){
 		float timer = 0f;
@@ -218,6 +248,7 @@ public class PlayerRobotController : RobotController {
 		if (_currentHorizontalIndex == _tileGridData.horizontalTileCnt - 1) {
 			if (_currentVerticalIndex == _tileGridData.verticalTileCnt - 1) {
 				GameManager._gameManagerInstance.GameCompleted();
+
 			}
 		}
 	}

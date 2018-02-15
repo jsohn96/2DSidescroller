@@ -11,6 +11,30 @@ public class GameStateUI : MonoBehaviour {
 
 	PlayState _prevPlayState = PlayState.Init;
 
+	int _enemyKills = 0;
+	public int EnemyKills {
+		get { return _enemyKills; }
+	}
+	int _timesHit = 0;
+	public int TimesHit {
+		get { return _timesHit; }
+	}
+	int _numberOfRounds = 0;
+	public int NumberOfRounds {
+		get { return _numberOfRounds; }
+	}
+
+	GameStateUI _gameStatsInstance = null;
+
+	void Awake(){
+		if (_gameStatsInstance == null) {
+			_gameStatsInstance = this;
+		} else if (_gameStatsInstance != this) {
+			Destroy (gameObject);
+		}
+		DontDestroyOnLoad (this);
+	}
+
 
 	public void SwitchStateUI(PlayState currentPlayState){
 		DisablePreviousPlayState ();

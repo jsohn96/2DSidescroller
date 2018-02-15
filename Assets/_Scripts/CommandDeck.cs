@@ -64,13 +64,13 @@ public class CommandDeck : MonoBehaviour {
 			drawnCard = 0;
 		} else if (randomNumber < 25) {
 			drawnCard = 1;
-		} else if (randomNumber < 30) {
+		} else if (randomNumber < 35) {
 			drawnCard = 2;
 		} else if (randomNumber < 65) {
 			drawnCard = 3;
-		} else if (randomNumber < 85) {
+		} else if (randomNumber < 90) {
 			drawnCard = 4;
-		} else if (randomNumber < 95) {
+		} else if (randomNumber < 98) {
 			drawnCard = 5;
 		} else {
 			drawnCard = 6;

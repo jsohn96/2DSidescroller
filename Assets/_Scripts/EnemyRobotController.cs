@@ -7,6 +7,7 @@ public class EnemyRobotController : RobotController {
 	//preassigned Enemy Behavior
 	TileGridData _tileGridData;
 	[SerializeField] PlayerMoveSet[] _enemyMoveSetArray;
+	PlayerRobotController _playerRobotController;
 
 	int _thisEnemyMovesetLength = 0;
 	int _currentMoveIndex = 0;
@@ -20,6 +21,8 @@ public class EnemyRobotController : RobotController {
 		_isFacingRight = !_isFacingRight;
 
 		_robotEnemyMaterialHandler = GetComponent<RobotEnemyMaterialHandler> ();
+
+		_playerRobotController = GameObject.Find ("PlayerRobot").GetComponent <PlayerRobotController>();
 	}
 
 	public void InitializeEnemy(int posX, int posY, PlayerMoveSet[] parsedCommands){
@@ -28,12 +31,6 @@ public class EnemyRobotController : RobotController {
 		_enemyMoveSetArray = parsedCommands;
 		_thisEnemyMovesetLength = _enemyMoveSetArray.Length;
 	}
-
-//	public override float Attack (bool isLeft) {
-//		//TODO: Process the bool value for Left Right
-//		_robotAnim.SetTrigger (_attackAnimHash);
-//		return _attackDuration;
-//	}
 
 	public override float Jump(bool isUp) {
 		int goalYIndex;
@@ -96,6 +93,11 @@ public class EnemyRobotController : RobotController {
 		Tile tempCurrentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
 
 		Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
+
+		if (tile.isPlayer) {
+			_playerRobotController.AttackedByEnemy ();
+		}
+
 		StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
 
 		//Set the previous tile to reflect player absence
@@ -155,7 +157,4 @@ public class EnemyRobotController : RobotController {
 	void OnDisable(){
 		EnemyTurnManager.OnEnemyMove -= HandleEnemyMove;
 	}
-
-
-
 }

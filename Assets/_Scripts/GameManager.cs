@@ -19,7 +19,6 @@ public enum PlayState {
 	PlayerTurn = 2,
 	EnemyTurn = 3,
 	Completed = 4
-
 }
 
 public class GameManager : MonoBehaviour {
