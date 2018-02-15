@@ -34,6 +34,7 @@ public class PlayerRobotController : RobotController {
 			} else if (isLeft) {
 				if (tile.isOccupied) {
 					LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex, _currentVerticalIndex);
+					GameStateUI._gameStatsInstance.EnemyKills++;
 					tile.isOccupied = false;
 					LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex, _currentVerticalIndex, tile);
 				}
@@ -42,6 +43,7 @@ public class PlayerRobotController : RobotController {
 					Tile rightTile = LevelGenerator._levelGeneratorInstance.GetTile (punchTargetIndex + 1, _currentVerticalIndex);
 					if (rightTile.isOccupied) {
 						LevelGenerator._levelGeneratorInstance.DestroyEnemy (punchTargetIndex + 1, _currentVerticalIndex);
+						GameStateUI._gameStatsInstance.EnemyKills++;
 						rightTile.isOccupied = false;
 						LevelGenerator._levelGeneratorInstance.SetTile (punchTargetIndex + 1, _currentVerticalIndex, rightTile);
 					}
@@ -80,6 +82,7 @@ public class PlayerRobotController : RobotController {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
 			if (tile.isOccupied) {
 				_playerRobotMaterialHandler.TakeDamage ();
+				GameStateUI._gameStatsInstance.TimesHit++;
 				StartCoroutine (LerpFailedMovement(transform.position, goalPos, _moveDuration));
 			} else {
 				StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
@@ -136,6 +139,7 @@ public class PlayerRobotController : RobotController {
 			Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
 			if (tile.isOccupied) {
 				_playerRobotMaterialHandler.TakeDamage ();
+				GameStateUI._gameStatsInstance.TimesHit++;
 				StartCoroutine (LerpFailedMovement(transform.position, goalPos, _moveDuration));
 			} else {
 				StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
@@ -209,6 +213,7 @@ public class PlayerRobotController : RobotController {
 
 	public void AttackedByEnemy(){
 		_playerRobotMaterialHandler.TakeDamage ();
+		GameStateUI._gameStatsInstance.TimesHit++;
 		Tile currentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
 		Tile priorTile = LevelGenerator._levelGeneratorInstance.GetTile (_priorHorizontalIndex, _priorVerticalIndex);
 		Debug.Log (_priorHorizontalIndex);

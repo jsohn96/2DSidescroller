@@ -9,5 +9,8 @@ EditorBuildSettings:
     path: Assets/_Scenes/StartScene.unity
     guid: d2636c06516e94a4bbeaabcd4c924a0e
   - enabled: 1
-    path: Assets/_Scenes/LevelScene.unity
-    guid: faa805a7c6867624792f1526dca1bda0
+    path: Assets/_Scenes/PlatformingStage.unity
+    guid: fe82ebe7f434c3841a02547087a0450e
+  - enabled: 1
+    path: Assets/_Scenes/GameOver.unity
+    guid: 40f76df34b9761c468365d68e06a575a
