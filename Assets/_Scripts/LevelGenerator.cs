@@ -93,7 +93,7 @@ public class LevelGenerator : MonoBehaviour {
 		_isInitialized = true;
 
 		//select a random path to Parse
-		ReadTextFile(_paths[Random.Range (0, _paths.Length)]);
+		ReadTextFile(Application.dataPath + _paths[Random.Range (0, _paths.Length)]);
 
 		GenerateLevel ();
 	}
@@ -102,7 +102,7 @@ public class LevelGenerator : MonoBehaviour {
 		// Regenerate a level upon reset
 		if (scene.buildIndex == 1 && _isInitialized) {
 			//select a random path to Parse
-			ReadTextFile (_paths [Random.Range (0, _paths.Length)]);
+			ReadTextFile (Application.dataPath + _paths [Random.Range (0, _paths.Length)]);
 			GenerateLevel ();
 		}
 	}

@@ -1942,9 +1942,6 @@ MonoBehaviour:
   _enemyRobotPrefab: {fileID: 1370071610932064, guid: 50eaa1eed235b454b8c647a280f5ddcd,
     type: 2}
   _paths:
-  - Assets\Resources\levelTest.txt
-  - Assets\Resources\level1.txt
-  - Assets\Resources\level2.txt
   _floorSprite: {fileID: 21300000, guid: 3d477dffea758a6419c3107b5426d905, type: 3}
   _jumpSprite: {fileID: 21300000, guid: d5a7943f0c144d44aaab70a10fbc2dce, type: 3}
 --- !u!4 &401467084
