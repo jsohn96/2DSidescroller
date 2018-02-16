@@ -11,4 +11,4 @@ Feature
 - The level is dynamically generated
 - The command sequences are presented as a deck of cards
 
-[[../2DSidescroller/Assets/Textures/instructions.png|alt=instructions]]
+![Alt text](/Assets/Textures/instructions.png?raw=true "instructions")
