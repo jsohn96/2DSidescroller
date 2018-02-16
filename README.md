@@ -1,6 +1,9 @@
 # 2DSidescroller
 2D Sidescrolling game test by Jung-Ho Sohn
 
+Created in Unity 2017.1.1f1
+with Mouse controls
+
 This game is an asynchronous turn based platformer.
 You control a robot with a sequence of commands to avoid obstacles and reach the goal.
 
