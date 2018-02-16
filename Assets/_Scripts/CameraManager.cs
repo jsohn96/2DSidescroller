@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Moves the camera position and zoom based on current Play State
 public class CameraManager : MonoBehaviour {
 	[SerializeField] Vector3 _strategyPhaseCameraPos;
 	[SerializeField] Vector3 _enemyActionPhaseCameraPos;
@@ -30,6 +31,7 @@ public class CameraManager : MonoBehaviour {
 		}
 	}
 
+	// Calculate the goal position for player robot follow cams
 	Vector3 CalculatePlayerActionCamPosition(){
 		_tempCamPos.x = _playerRobot.position.x;
 		_tempCamPos.y = _playerRobot.position.y + 0.8f;
@@ -47,7 +49,7 @@ public class CameraManager : MonoBehaviour {
 		}
 	}
 
-	// Lerp Camera Between the two phase position
+	// Lerp Camera Between the three phase position
 	IEnumerator LerpCameraPos(){
 		_transitioning = true;
 		float timer = 0f;

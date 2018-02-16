@@ -15,13 +15,7 @@ public class PlayerCommandManager : MonoBehaviour {
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;
 	}
-
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.F)) {
-			RelayCommand ();
-		}
-	}
-
+		
 	public void FeedInCommands(PlayerMoveSet[] playerMoves){
 		_playerMoveSetArray = playerMoves;
 	}

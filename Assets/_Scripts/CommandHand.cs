@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Defines the Drop areas for command card placement
 public class CommandHand : MonoBehaviour, IDropHandler {
 	public enum Slot {
 		Hand = 0,

@@ -49,8 +49,9 @@ public class RobotController : MonoBehaviour {
 	}
 
 
-	//Call when robot is facing the incorrect direction
+	//Call when robot is facing the incorrect direction and rotate the character 180 degrees
 	public IEnumerator TurnAround(){
+		AudioManager._audioManagerInstance.PlayTurnAround ();
 		Vector3 currentEuler = transform.eulerAngles;
 		Vector3 goalEuler = currentEuler;
 		goalEuler.y -= 180f;
@@ -66,6 +67,7 @@ public class RobotController : MonoBehaviour {
 		yield return null;
 	}
 
+	//Handles the movement of the characters, both jump and walk
 	public IEnumerator LerpMove(Vector3 startPos, Vector3 goalPos, float duration, bool isWalk, bool isUp = false){
 		float timer = 0f;
 		while (timer < duration) {

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
+//Manages processes in the title screen
 public class TitleScreen : MonoBehaviour {
 	Fading _fadeScript;
 	AsyncOperation async;
+	[SerializeField] Image _instructionImage;
 
 	void Start(){
 		_fadeScript = GameObject.Find ("Fade").GetComponent<Fading> ();
@@ -14,14 +17,17 @@ public class TitleScreen : MonoBehaviour {
 	}
 
 	public void ExitGame(){
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		Application.Quit ();
 	}
 
 	public void ShowControls() {
-	
+		AudioManager._audioManagerInstance.PlayButtonClick ();
+		_instructionImage.enabled = !_instructionImage.enabled;
 	}
 
 	public void StartGame() {
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		StartCoroutine (ChangeLevel ());
 	}
 

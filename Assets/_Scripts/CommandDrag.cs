@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Responsible for card Drag functionality
+// and determines appropriate card placement based on drag position
 public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 	PlayerMoveSet _whichMoveSet = PlayerMoveSet.none;
@@ -54,6 +56,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	public void OnBeginDrag(PointerEventData data){
+		AudioManager._audioManagerInstance.PlayPlaceCard ();
 		_originParent = transform.parent;
 		transform.SetParent (_thisCanvas);
 		if (_thisCanvasGroup == null) {
@@ -73,11 +76,13 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	public void OnEndDrag(PointerEventData data){
+		AudioManager._audioManagerInstance.PlayDrawCard ();
 		transform.SetParent (_originParent);
 		_thisCanvasGroup.blocksRaycasts = true;
 		_commandHover.IsDragging (false);
 	}
 
+	// Remove cards from play when they have been used
 	public void RemoveFromPlay(){
 		_image.raycastTarget = false;
 		_commandHover.enabled = false;
@@ -89,6 +94,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		StartCoroutine (FadeCommandAway ());
 	}
 
+	//bring back removed cards into play when drawn from deck
 	public void Activate(Sprite sprite, PlayerMoveSet playerMoveSet){
 		_image.sprite = sprite;
 		_whichMoveSet = playerMoveSet;
@@ -103,6 +109,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		_removedFromPlay = false;
 	}
 
+	// return card back to hand position when swapped with another card
 	public void ReturnToHand(){
 		transform.SetParent (_handArea);
 		StartCoroutine (UnityBugWorkAround ());
@@ -117,7 +124,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		// End of Temporary solution
 	}
 
-
+	// Fade the confirmed cards away
 	IEnumerator FadeCommandAway(){
 		float timer = 0f;
 		float duration = 1f;

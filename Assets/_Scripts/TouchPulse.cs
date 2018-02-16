@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Particle Feedback for touch position
 public class TouchPulse : MonoBehaviour {
 	Vector3 _screenPos;
 	Vector3 _worldPos;

@@ -19,7 +19,6 @@ public enum PlayState {
 	PlayerTurn = 2,
 	EnemyTurn = 3,
 	Completed = 4
-
 }
 
 public class GameManager : MonoBehaviour {
@@ -43,32 +42,29 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] PlayerCommandManager _playerCommandManager;
 	[SerializeField] EnemyTurnManager _enemyTurnManager;
 
-	[SerializeField] GameStateUI _gameStateUI;
 	[SerializeField] TogglePlayerStrategyUI _togglePlayerStrategyUI;
 	[SerializeField] CameraManager _cameraManager;
 
 	bool _gameCompleted = false;
 
 	void Awake(){
-//		if (_gameManagerInstance == null) {
-			_gameManagerInstance = this;
-//		}
-//		else if (_gameManagerInstance != this) {
-//			Destroy (gameObject);
-//		}
-//		DontDestroyOnLoad (this);
+		_gameManagerInstance = this;
 	}
 
 	void Start(){
 		HandleCurrentState ();
 	}
 
+	// Stop State Progression once player reaches the end goal
 	public void GameCompleted(){
 		_gameCompleted = true;
 		_currentPlayState = PlayState.Completed;
-		_gameStateUI.SwitchStateUI (_currentPlayState);
+		GameStateUI._gameStatsInstance.SwitchStateUI (_currentPlayState);
+		// display message to the player
+		GameStateUI._gameStatsInstance.ShowEndStats ();
 	}
 
+	// Progress the game state to next state
 	public void MoveToNextState(){
 		if (!_gameCompleted) {
 			switch (_currentPlayState) {
@@ -90,23 +86,24 @@ public class GameManager : MonoBehaviour {
 			HandleCurrentState ();
 		}
 	}
-
+		
 	void HandleCurrentState(){
 		if (!_gameCompleted) {
 			switch (_currentPlayState) {
 			case PlayState.Strategize:
-				_gameStateUI.SwitchStateUI (_currentPlayState);
+				GameStateUI._gameStatsInstance.SwitchStateUI (_currentPlayState);
 				_togglePlayerStrategyUI.ToggleStrategyPhaseOn (true);
 				_playerStrategyManager.BeginPlayerStrategy ();
 				_cameraManager.SwitchCameraPhase ();
 				break;
 			case PlayState.PlayerTurn:
-				_gameStateUI.SwitchStateUI (_currentPlayState);
+				GameStateUI._gameStatsInstance.SwitchStateUI (_currentPlayState);
 				_playerCommandManager.BeginPlayerCommand ();
 				_cameraManager.SwitchCameraPhase ();
+				GameStateUI._gameStatsInstance.NumberOfRounds++;
 				break;
 			case PlayState.EnemyTurn:
-				_gameStateUI.SwitchStateUI (_currentPlayState);
+				GameStateUI._gameStatsInstance.SwitchStateUI (_currentPlayState);
 				_enemyTurnManager.BeginEnemyTurn ();
 				_cameraManager.SwitchCameraPhase ();
 

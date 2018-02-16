@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// Moves card on hover to provide feedback on selectable card
 public class CommandHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 	RectTransform _thisRectTransform;
 	float _yOffsetAmount = 30f;
