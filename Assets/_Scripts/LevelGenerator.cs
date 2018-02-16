@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 //For saving level data of each occupiable space
 public struct Tile {
@@ -76,16 +77,20 @@ public class LevelGenerator : MonoBehaviour {
 	[SerializeField] Sprite _floorSprite;
 	[SerializeField] Sprite _jumpSprite;
 
+	//keep record for resetting the same scene
+	bool _isInitialized = false;
+
 	void Awake(){
 		_levelGeneratorInstance = this;
 	}
-
+		
 	void Start(){
 		_tiles = new Tile[_tileGridData.horizontalTileCnt, _tileGridData.verticalTileCnt];
 		_tileGameObject = new GameObject[_tileGridData.horizontalTileCnt, _tileGridData.verticalTileCnt];
 
 		//Create a default version of the level expected to be populated later
 		InitializeLevel ();
+		_isInitialized = true;
 
 		//select a random path to Parse
 		ReadTextFile(_paths[Random.Range (0, _paths.Length)]);
@@ -93,6 +98,14 @@ public class LevelGenerator : MonoBehaviour {
 		GenerateLevel ();
 	}
 
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode){
+		// Regenerate a level upon reset
+		if (scene.buildIndex == 1 && _isInitialized) {
+			//select a random path to Parse
+			ReadTextFile (_paths [Random.Range (0, _paths.Length)]);
+			GenerateLevel ();
+		}
+	}
 
 	//intialize the nested Array of tiles to be used for generating level
 	void InitializeLevel() {
@@ -269,5 +282,13 @@ public class LevelGenerator : MonoBehaviour {
 			//Call to instantiate enemy
 			GenerateEnemy (enemyH, enemyV, tempEnemyMoveset);
 		}
+	}
+
+	void OnEnable(){
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	void OnDisable(){
+		SceneManager.sceneLoaded -= OnSceneLoaded;
 	}
 }
