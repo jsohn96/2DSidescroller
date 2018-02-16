@@ -77,6 +77,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 			_outlineMaterials [i].SetColor (_outlineColor, _damagedColor);
 		}
 		yield return new WaitForSeconds (0.8f);
+		AudioManager._audioManagerInstance.PlayDeath ();
 		float timer = 0f;
 		float duration = 0.8f;
 		float impactValue;

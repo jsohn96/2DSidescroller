@@ -174,6 +174,7 @@ GameObject:
   - component: {fileID: 114798001931836676}
   - component: {fileID: 65775857309227266}
   - component: {fileID: 114836742791992230}
+  - component: {fileID: 114588436912096610}
   m_Layer: 0
   m_Name: RobotEnemy
   m_TagString: Untagged
@@ -771,6 +772,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114588436912096610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1370071610932064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe1d281ad069b4498a18be13f592502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114798001931836676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -884,7 +896,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   _enemyMoveSetArray: 
-  _playerRobotController: {fileID: 0}
 --- !u!114 &114836742791992230
 MonoBehaviour:
   m_ObjectHideFlags: 1

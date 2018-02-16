@@ -30,6 +30,7 @@ public class CommandDeck : MonoBehaviour {
 	//Draw a command card from the deck and place it into the hand
 	public void DrawCommand (){
 		if (_commandCardsInPlay < _totalCardCnt) {
+			AudioManager._audioManagerInstance.PlayDrawCard ();
 			_prevDrawnMove = SelectRandomMoveset ();
 			IterateCardPool ();
 		}
@@ -60,17 +61,17 @@ public class CommandDeck : MonoBehaviour {
 	int SelectRandomMoveset(){
 		int drawnCard;
 		int randomNumber = Random.Range (0, 100);
-		if (randomNumber < 10) {
+		if (randomNumber < 5) {
 			drawnCard = 0;
-		} else if (randomNumber < 25) {
+		} else if (randomNumber < 15) {
 			drawnCard = 1;
-		} else if (randomNumber < 35) {
+		} else if (randomNumber < 21) {
 			drawnCard = 2;
-		} else if (randomNumber < 69) {
+		} else if (randomNumber < 65) {
 			drawnCard = 3;
-		} else if (randomNumber < 90) {
+		} else if (randomNumber < 91) {
 			drawnCard = 4;
-		} else if (randomNumber < 98) {
+		} else if (randomNumber < 96) {
 			drawnCard = 5;
 		} else {
 			drawnCard = 6;

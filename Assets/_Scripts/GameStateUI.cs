@@ -58,6 +58,7 @@ public class GameStateUI : MonoBehaviour {
 		_completed.enabled = false;
 		_tookButtonInputOnce = false;
 		if (scene.buildIndex == 2) {
+			AudioManager._audioManagerInstance.PlayGlitch ();
 			DisplayStats ();
 		} else {
 			//Reset all stats when entering game scene
@@ -118,6 +119,7 @@ public class GameStateUI : MonoBehaviour {
 
 	public void ReturnToTitle(){
 		if (!_tookButtonInputOnce) {
+			AudioManager._audioManagerInstance.PlayButtonClick ();
 			_tookButtonInputOnce = true;
 			StartCoroutine (ChangeLevel (0, 1f));
 		}
@@ -125,6 +127,7 @@ public class GameStateUI : MonoBehaviour {
 
 	public void RestartGame(){
 		if (!_tookButtonInputOnce) {
+			AudioManager._audioManagerInstance.PlayButtonClick ();
 			_tookButtonInputOnce = true;
 			StartCoroutine (ChangeLevel (1, 1f));
 		}

@@ -16,14 +16,17 @@ public class TitleScreen : MonoBehaviour {
 	}
 
 	public void ExitGame(){
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		Application.Quit ();
 	}
 
 	public void ShowControls() {
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		_instructionImage.enabled = !_instructionImage.enabled;
 	}
 
 	public void StartGame() {
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		StartCoroutine (ChangeLevel ());
 	}
 

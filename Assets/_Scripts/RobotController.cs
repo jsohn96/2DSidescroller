@@ -51,6 +51,7 @@ public class RobotController : MonoBehaviour {
 
 	//Call when robot is facing the incorrect direction
 	public IEnumerator TurnAround(){
+		AudioManager._audioManagerInstance.PlayTurnAround ();
 		Vector3 currentEuler = transform.eulerAngles;
 		Vector3 goalEuler = currentEuler;
 		goalEuler.y -= 180f;

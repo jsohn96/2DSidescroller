@@ -49,6 +49,11 @@ public class EnemyRobotController : RobotController {
 		Tile tile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, yIndex);
 		Tile tempCurrentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
 		Vector3 goalPos = new Vector3 (tile.x, tile.y + _tileGridData.robotFootingOffset, -1f);
+
+		if (tile.isPlayer) {
+			_playerRobotController.AttackedByEnemy ();
+		}
+
 		StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
 		_robotAnim.SetTrigger (_jumpAnimHash);
 

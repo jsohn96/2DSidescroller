@@ -57,6 +57,7 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 
 	public IEnumerator DestroyEnemy() {
 		yield return new WaitForSeconds (1.4f);
+		AudioManager._audioManagerInstance.PlayDeath ();
 		float timer = 0f;
 		float duration = 0.5f;
 		while (timer < duration) {

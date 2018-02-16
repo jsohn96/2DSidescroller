@@ -22,6 +22,7 @@ public class PlayerStrategyManager : MonoBehaviour {
 
 
 	public void ConfirmStrategy(){
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		int slotCnt = _slots.Length;
 		for (int i = 0; i < slotCnt; i++) {
 			PlayerMoveSet tempMoveSet = _slots [i].CheckOccupancy ();

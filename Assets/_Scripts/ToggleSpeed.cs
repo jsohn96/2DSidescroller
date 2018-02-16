@@ -13,6 +13,7 @@ public class ToggleSpeed : MonoBehaviour {
 	}
 
 	public void ToggleGameSpeed() {
+		AudioManager._audioManagerInstance.PlayButtonClick ();
 		if (_isSpedUp) {
 			Time.timeScale = 1.0f;
 			_text.text = "Speed x3";

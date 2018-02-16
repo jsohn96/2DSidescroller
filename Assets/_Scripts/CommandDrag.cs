@@ -54,6 +54,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	public void OnBeginDrag(PointerEventData data){
+		AudioManager._audioManagerInstance.PlayPlaceCard ();
 		_originParent = transform.parent;
 		transform.SetParent (_thisCanvas);
 		if (_thisCanvasGroup == null) {
@@ -73,6 +74,7 @@ public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	public void OnEndDrag(PointerEventData data){
+		AudioManager._audioManagerInstance.PlayDrawCard ();
 		transform.SetParent (_originParent);
 		_thisCanvasGroup.blocksRaycasts = true;
 		_commandHover.IsDragging (false);
