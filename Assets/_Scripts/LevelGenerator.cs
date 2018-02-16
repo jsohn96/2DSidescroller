@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+//For saving level data of each occupiable space
 public struct Tile {
 	public float x;
 	public float y;
@@ -21,6 +22,7 @@ public struct Tile {
 	}
 }
 
+//Data for passing on level data to player and enemy robot controller
 [System.Serializable]
 public struct TileGridData {
 	public int verticalTileCnt;
@@ -159,6 +161,7 @@ public class LevelGenerator : MonoBehaviour {
 		return _tileGridData;
 	}
 
+	//Called by playerRobotController.cs to find the correct enemy to destroy
 	public void DestroyEnemy(int hCnt, int vCnt){
 		bool enemyToDestroyFound = false;
 		IEnumerator<EnemyRobotController> iEnum = _enemyRobotControllers.GetEnumerator ();

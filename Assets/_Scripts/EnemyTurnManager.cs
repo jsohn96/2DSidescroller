@@ -16,13 +16,6 @@ public class EnemyTurnManager : MonoBehaviour {
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;
 	}
-	
-	void Update () {
-		//TODO: Remove this input later
-		if (Input.GetKeyDown (KeyCode.G)) {
-			MakeEnemyMove();
-		}
-	}
 
 	//Send Event to all enemies to make next move
 	void MakeEnemyMove(){
@@ -34,6 +27,7 @@ public class EnemyTurnManager : MonoBehaviour {
 		StartCoroutine (WaitForNextMove ());
 	}
 
+	// Delay between each movement
 	IEnumerator WaitForNextMove(){
 		yield return new WaitForSeconds (_longestWaitDuration);
 		if (_currentMoveCnt < _totalMoveCnt) {

@@ -48,27 +48,23 @@ public class GameManager : MonoBehaviour {
 	bool _gameCompleted = false;
 
 	void Awake(){
-//		if (_gameManagerInstance == null) {
-			_gameManagerInstance = this;
-//		}
-//		else if (_gameManagerInstance != this) {
-//			Destroy (gameObject);
-//		}
-//		DontDestroyOnLoad (this);
+		_gameManagerInstance = this;
 	}
 
 	void Start(){
 		HandleCurrentState ();
-
 	}
 
+	// Stop State Progression once player reaches the end goal
 	public void GameCompleted(){
 		_gameCompleted = true;
 		_currentPlayState = PlayState.Completed;
 		GameStateUI._gameStatsInstance.SwitchStateUI (_currentPlayState);
+		// display message to the player
 		GameStateUI._gameStatsInstance.ShowEndStats ();
 	}
 
+	// Progress the game state to next state
 	public void MoveToNextState(){
 		if (!_gameCompleted) {
 			switch (_currentPlayState) {
@@ -90,7 +86,7 @@ public class GameManager : MonoBehaviour {
 			HandleCurrentState ();
 		}
 	}
-
+		
 	void HandleCurrentState(){
 		if (!_gameCompleted) {
 			switch (_currentPlayState) {

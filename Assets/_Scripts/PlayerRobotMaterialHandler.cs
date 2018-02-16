@@ -16,6 +16,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	float _maxDamageExtrustionValue = 2.0f;
 
 	bool _isTakingDamage = false;
+	// animation curve to push character back upon impact with enemy
 	[SerializeField] AnimationCurve _damageImpactCurve;
 	Color _originColor = new Color (0f, 1f, 0f, 1f);
 	Color _damagedColor = new Color(1.0f, 0f, 0f, 1f);
@@ -26,6 +27,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 		_outlineWidth = Shader.PropertyToID ("_OutlineWidth");
 		_outlineNormalExtrusion = Shader.PropertyToID ("_OutlineNormalExtrusion");
 
+		//get reference to the characters materials for toggling outline/damage
 		int skinnedMeshLength = _skinnedMeshRenderer.Length;
 		for (int i = 0; i < skinnedMeshLength; i++) {
 			_outlineMaterialsLength += _skinnedMeshRenderer [i].materials.Length;
@@ -44,6 +46,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 	}
 
 	void OnMouseEnter(){
+		// Toggle outline on
 		if (!_isTakingDamage) {
 			for (int i = 0; i < _outlineMaterialsLength; i++) {
 				_outlineMaterials [i].SetFloat (_outlineWidth, _outlineWidthValue);
@@ -65,6 +68,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 		}
 	}
 
+	// Increments Damage counter and display damage animation
 	public void TakeDamage(){
 		TurnOffOutline ();
 		_isTakingDamage = true;
@@ -72,6 +76,7 @@ public class PlayerRobotMaterialHandler : MonoBehaviour {
 		StartCoroutine (TakingDamage ());
 	}
 
+	//Play the damaging animation through outline shader extrusion
 	IEnumerator TakingDamage(){
 		for (int i = 0; i < _outlineMaterialsLength; i++) {
 			_outlineMaterials [i].SetColor (_outlineColor, _damagedColor);

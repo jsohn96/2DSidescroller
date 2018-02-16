@@ -101,6 +101,7 @@ public class GameStateUI : MonoBehaviour {
 		_prevPlayState = currentPlayState;
 	}
 
+	//disable UI elements remaining from previous state
 	void DisablePreviousPlayState(){
 		switch (_prevPlayState) {
 		case PlayState.Strategize:
@@ -132,7 +133,7 @@ public class GameStateUI : MonoBehaviour {
 			StartCoroutine (ChangeLevel (1, 1f));
 		}
 	}
-
+		
 	public void ShowEndStats(){
 		StartCoroutine (ChangeLevel (2, 2f));
 	}

@@ -25,6 +25,7 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 	}
 
 	void Start(){
+		// swap enemy robot materials to a predefined enemy material
 		int meshRenderersLength = _robotSkinnedMeshRenderers.Length;
 		for (int i = 0; i < meshRenderersLength; i++) {
 			_robotMaterials = _robotSkinnedMeshRenderers [i].materials;
@@ -41,6 +42,7 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 		_outlineNormalExtrusion = Shader.PropertyToID ("_OutlineNormalExtrusion");
 	}
 
+	//Toggle outline on mouse enter
 	void OnMouseEnter(){
 		if (!_isBeingDestroyed) {
 			_material.SetFloat (_outlineWidth, _outlineWidthValue);
@@ -48,6 +50,7 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 		}
 	}
 
+	//Toggle outline off on mouse exit
 	void OnMouseExit(){
 		if (!_isBeingDestroyed) {
 			_material.SetFloat (_outlineWidth, 0.0f);
@@ -55,6 +58,7 @@ public class RobotEnemyMaterialHandler : MonoBehaviour {
 		}
 	}
 
+	// Display the enemy destruction animation
 	public IEnumerator DestroyEnemy() {
 		yield return new WaitForSeconds (1.4f);
 		AudioManager._audioManagerInstance.PlayDeath ();

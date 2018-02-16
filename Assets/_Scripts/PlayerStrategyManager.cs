@@ -20,7 +20,8 @@ public class PlayerStrategyManager : MonoBehaviour {
 		_tentativePlayerMoveSet = new PlayerMoveSet[_totalMoveCnt];
 	}
 
-
+	//Triggered by button press 
+	// Checks if all appropriate slots have been filled to either accept or reject player sequence input
 	public void ConfirmStrategy(){
 		AudioManager._audioManagerInstance.PlayButtonClick ();
 		int slotCnt = _slots.Length;
@@ -40,12 +41,14 @@ public class PlayerStrategyManager : MonoBehaviour {
 		_confirmButton.interactable = false;
 	}
 
+	// Fail state for player input
 	void ReturnAllCardsToHand(int slotCnt){
 		for (int i = 0; i < slotCnt; i++) {
 			_slots [i].ReturnOccupant ();
 		}
 	}
 
+	// success state for player input
 	void RemoveConfirmedCardsFromPlay(int slotCnt){
 		for (int i = 0; i < slotCnt; i++) {
 			_slots [i].RemoveOccupant ();
@@ -54,6 +57,7 @@ public class PlayerStrategyManager : MonoBehaviour {
 
 	}
 
+	//Triggered when game manager enters strategy phase
 	public void BeginPlayerStrategy(){
 		_confirmButton.interactable = true;
 	}

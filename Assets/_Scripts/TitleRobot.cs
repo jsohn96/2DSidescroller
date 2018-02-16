@@ -32,10 +32,7 @@ public class TitleRobot : RobotController {
 		return _moveDuration;
 	}
 
-	public override float Rest() {
-		return _restDuration;
-	}
-
+	// Toggle outline glow on
 	void OnMouseEnter() {
 		_originalMaterials = _robotSkinnedMeshRenderer.materials;
 		_robotSkinnedMeshRenderer.materials = _robotMaterials;
@@ -43,24 +40,23 @@ public class TitleRobot : RobotController {
 		_robotMidGreenMeshRenderer.material = _robotMidGreenMaterials;
 	}
 
+	// Toggle outline glow off
 	void OnMouseExit() {
 		_robotSkinnedMeshRenderer.materials = _originalMaterials;
 		_robotMidGreenMeshRenderer.material = _robotOriginalGreenMaterial;
 	}
 
+	// perform an animation
 	void OnMouseDown(){
-		int randomNumber = Random.Range (1, 5);
+		int randomNumber = Random.Range (1, 4);
 		switch (randomNumber) {
 		case 1:
 			Move (true);
 			break;
 		case 2:
-			Move (false);
-			break;
-		case 3:
 			Jump (true);
 			break;
-		case 4:
+		case 3:
 			Attack (true);
 			break;
 		default:

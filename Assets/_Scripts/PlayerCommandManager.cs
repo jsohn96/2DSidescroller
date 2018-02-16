@@ -15,7 +15,7 @@ public class PlayerCommandManager : MonoBehaviour {
 	void Start(){
 		_totalMoveCnt = GameManager._gameManagerInstance.HowManyMovesPerTurn;
 	}
-
+		
 	public void FeedInCommands(PlayerMoveSet[] playerMoves){
 		_playerMoveSetArray = playerMoves;
 	}
