@@ -10,3 +10,5 @@ after which the enemy will respond with three moves of their own.
 Feature
 - The level is dynamically generated
 - The command sequences are presented as a deck of cards
+
+[[https://github.com/jsohn96/2DSidescroller/Assets/Textures/instructions.png|alt=instructions]]
