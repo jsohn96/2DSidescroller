@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//EnemyRobotController manages the actions and movement of the enemy characters
 public class EnemyRobotController : RobotController {
 
 	//preassigned Enemy Behavior

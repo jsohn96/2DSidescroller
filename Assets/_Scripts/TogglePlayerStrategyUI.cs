@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Toggles Strategy UI elements on and off based on current playstate
 public class TogglePlayerStrategyUI : MonoBehaviour {
 	[SerializeField] float _uiTransitionDuration = 0.8f;
 
@@ -28,14 +29,6 @@ public class TogglePlayerStrategyUI : MonoBehaviour {
 			_bottomUIRectTransform.anchoredPosition = _bottomOffPos;
 		}
 	}
-
-//	void Update(){
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			_uiToggledOn = !_uiToggledOn;
-//			ToggleStrategyPhaseOn (_uiToggledOn);
-//		}
-//	}
-
 
 	public void ToggleStrategyPhaseOn(bool on) {
 		_uiToggledOn = on;

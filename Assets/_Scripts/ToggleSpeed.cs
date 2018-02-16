@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Toggles timescale to alter in game speed
 public class ToggleSpeed : MonoBehaviour {
 	Text _text;
 

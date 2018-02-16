@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//Manages processes in the title screen
 public class TitleScreen : MonoBehaviour {
 	Fading _fadeScript;
 	AsyncOperation async;

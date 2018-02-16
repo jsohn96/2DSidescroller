@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Manages the enemy turn phase by delegating enemy movements
 public class EnemyTurnManager : MonoBehaviour {
 	public delegate void EnemyMove();
 	public static event EnemyMove OnEnemyMove;

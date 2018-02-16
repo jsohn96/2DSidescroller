@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Provides feedback for Rest Player Action
 public class ToggleRest : MonoBehaviour {
 	TextMesh _textMesh;
 	string[] _existentialThoughts = new string[3]{

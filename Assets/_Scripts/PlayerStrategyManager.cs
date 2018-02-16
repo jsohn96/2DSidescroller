@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Responsible for Strategy Play State of receiving and processing player input 
 public class PlayerStrategyManager : MonoBehaviour {
 
 	int _totalMoveCnt;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Unique Controller for the robot in start scene
 public class TitleRobot : RobotController {
 	[Space(10)]
 	[Header("Robot Outline Material References")]

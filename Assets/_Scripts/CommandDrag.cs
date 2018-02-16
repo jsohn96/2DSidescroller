@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Responsible for card Drag functionality
+// and determines appropriate card placement based on drag position
 public class CommandDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 	PlayerMoveSet _whichMoveSet = PlayerMoveSet.none;

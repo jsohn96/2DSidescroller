@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerRobotController : RobotController {
+	// PlayerRobotController process player input and translates it into actions/movement in the game
 
 	// determines if attack is valid before processing effects
 	public override float Attack (bool isLeft) {

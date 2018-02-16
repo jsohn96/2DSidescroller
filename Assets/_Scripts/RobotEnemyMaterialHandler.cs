@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles Material realted processed on enemy robots
 public class RobotEnemyMaterialHandler : MonoBehaviour {
 
 	[SerializeField] Material _material;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Manages the dealing of cards and keeping track of the number of cards in play
+// also manages the object pool for cards
 public class CommandDeck : MonoBehaviour {
 	int _commandCardsInPlay = 0;
 	public int CommandCardsInPlay {
