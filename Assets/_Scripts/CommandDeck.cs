@@ -65,9 +65,9 @@ public class CommandDeck : MonoBehaviour {
 			drawnCard = 0;
 		} else if (randomNumber < 15) {
 			drawnCard = 1;
-		} else if (randomNumber < 21) {
+		} else if (randomNumber < 23) {
 			drawnCard = 2;
-		} else if (randomNumber < 65) {
+		} else if (randomNumber < 67) {
 			drawnCard = 3;
 		} else if (randomNumber < 91) {
 			drawnCard = 4;

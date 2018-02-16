@@ -216,8 +216,6 @@ public class PlayerRobotController : RobotController {
 		GameStateUI._gameStatsInstance.TimesHit++;
 		Tile currentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
 		Tile priorTile = LevelGenerator._levelGeneratorInstance.GetTile (_priorHorizontalIndex, _priorVerticalIndex);
-		Debug.Log (_priorHorizontalIndex);
-		Debug.Log ("vert " + _priorVerticalIndex);
 		Vector3 goalPos = new Vector3 (priorTile.x, priorTile.y + _tileGridData.robotFootingOffset, -1f);
 		StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
 

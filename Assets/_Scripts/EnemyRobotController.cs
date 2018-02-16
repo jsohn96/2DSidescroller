@@ -52,6 +52,7 @@ public class EnemyRobotController : RobotController {
 
 		if (tile.isPlayer) {
 			_playerRobotController.AttackedByEnemy ();
+			tile.isPlayer = false;
 		}
 
 		StartCoroutine (LerpMove (transform.position, goalPos, _jumpDuration, false, isUp));
@@ -101,6 +102,7 @@ public class EnemyRobotController : RobotController {
 
 		if (tile.isPlayer) {
 			_playerRobotController.AttackedByEnemy ();
+			tile.isPlayer = false;
 		}
 
 		StartCoroutine (LerpMove (transform.position, goalPos, _moveDuration, true));
