@@ -236,8 +236,6 @@ public class PlayerRobotController : RobotController {
 	public void AttackedByEnemy(){
 		_playerRobotMaterialHandler.TakeDamage ();
 		GameStateUI._gameStatsInstance.TimesHit++;
-		// reference to current position
-		Tile currentTile = LevelGenerator._levelGeneratorInstance.GetTile (_currentHorizontalIndex, _currentVerticalIndex);
 		// reference to previous position
 		Tile priorTile = LevelGenerator._levelGeneratorInstance.GetTile (_priorHorizontalIndex, _priorVerticalIndex);
 		Vector3 goalPos = new Vector3 (priorTile.x, priorTile.y + _tileGridData.robotFootingOffset, -1f);
@@ -245,9 +243,7 @@ public class PlayerRobotController : RobotController {
 
 		// update player relocation
 		priorTile.isPlayer = true;
-		currentTile.isPlayer = false;
 
-		LevelGenerator._levelGeneratorInstance.SetTile (_currentHorizontalIndex, _currentVerticalIndex, currentTile);
 		LevelGenerator._levelGeneratorInstance.SetTile (_priorHorizontalIndex, _priorVerticalIndex, priorTile);
 
 		// swap the current and previous position of the character

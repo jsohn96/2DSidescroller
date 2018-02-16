@@ -77,21 +77,14 @@ public class EnemyRobotController : RobotController {
 			if (_isFacingRight) {
 				StartCoroutine (TurnAround ());
 			}
-			// Check if the left space exists (is within bounds)
-			goalXIndex = _currentHorizontalIndex - 1;
-			if (goalXIndex >= 0) {
-				HandleMovement (goalXIndex, isLeft);
-
-			}
+			goalXIndex = _currentHorizontalIndex - 1;				
+			HandleMovement (goalXIndex, isLeft);
 		} else {
 			if (!_isFacingRight) {
 				StartCoroutine (TurnAround ());
 			}
-			// Check if the right space exists (is within bounds)
 			goalXIndex = _currentHorizontalIndex + 1;
-			if (goalXIndex < _tileGridData.horizontalTileCnt) {
-				HandleMovement (goalXIndex, isLeft);
-			}
+			HandleMovement (goalXIndex, isLeft);
 		}
 		_robotAnim.SetTrigger (_walkAnimHash);
 		return _moveDuration;
